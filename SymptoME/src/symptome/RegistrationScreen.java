@@ -2,6 +2,7 @@ package symptome;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,12 +33,14 @@ public class RegistrationScreen implements Screen {
         JPasswordField passwordField = new JPasswordField(20);
         
         JButton backButton = new JButton("Back");
-        backButton.addActionListener((ActionEvent e) -> {
-            handleBackButtonPressed();
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { handleBackButtonPressed(); }
         });
         JButton confirmButton = new JButton("Confirm");
-        confirmButton.addActionListener((ActionEvent e) -> {
-            handleConfirmButtonPressed();
+        confirmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { handleConfirmButtonPressed(); }
         });
         
         registrationPanel.add(titleLabel);

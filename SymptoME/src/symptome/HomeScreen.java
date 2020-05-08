@@ -2,6 +2,7 @@ package symptome;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,8 +26,9 @@ public class HomeScreen implements Screen{
         JLabel titleLabel = new JLabel("Home");
         
         JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener((ActionEvent e) -> {
-            handleLogoutButtonPressed();
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
         });
         
         homePanel.add(titleLabel);
