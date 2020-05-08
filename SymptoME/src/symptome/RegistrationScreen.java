@@ -1,6 +1,7 @@
 package symptome;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,7 +13,6 @@ public class RegistrationScreen implements Screen {
     
     public RegistrationScreen() {
         registrationPanel = setupRegistrationPanel();
-        setupLogic();
     }
     
     @Override
@@ -31,22 +31,32 @@ public class RegistrationScreen implements Screen {
         JLabel passwordLabel = new JLabel("Password");
         JPasswordField passwordField = new JPasswordField(20);
         
-        JButton loginButton = new JButton("Login");
-        JButton registerButton = new JButton("Register");
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener((ActionEvent e) -> {
+            handleBackButtonPressed();
+        });
+        JButton confirmButton = new JButton("Confirm");
+        confirmButton.addActionListener((ActionEvent e) -> {
+            handleConfirmButtonPressed();
+        });
         
         registrationPanel.add(titleLabel);
         registrationPanel.add(usernameLabel);
         registrationPanel.add(usernameField);
         registrationPanel.add(passwordLabel);
         registrationPanel.add(passwordField);
-        registrationPanel.add(loginButton);
-        registrationPanel.add(registerButton);
+        registrationPanel.add(backButton);
+        registrationPanel.add(confirmButton);
         
         return registrationPanel;
     }
     
-    private RegistrationScreen setupLogic() {
-        return this;
+    private Screen handleBackButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+    }
+    
+    private Screen handleConfirmButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
     }
         
 }

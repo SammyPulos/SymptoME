@@ -1,18 +1,16 @@
 package symptome;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 public class HomeScreen implements Screen{
     private JPanel homePanel;
     
     public HomeScreen() {
         homePanel = setupRegistrationPanel();
-        setupLogic();
     }
     
     @Override
@@ -26,14 +24,19 @@ public class HomeScreen implements Screen{
         
         JLabel titleLabel = new JLabel("Home");
         
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener((ActionEvent e) -> {
+            handleLogoutButtonPressed();
+        });
+        
         homePanel.add(titleLabel);
+        homePanel.add(logoutButton);
         
         return homePanel;
     }
     
-    private HomeScreen setupLogic() {
-        return this;
+    private Screen handleLogoutButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
     }
-        
     
 }

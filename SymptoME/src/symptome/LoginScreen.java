@@ -1,19 +1,20 @@
 package symptome;
 
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class LoginScreen implements Screen{
     private JPanel loginPanel;
+    JTextField usernameField;
+    JPasswordField passwordField;
     
     public LoginScreen() {
         loginPanel = setupLoginPanel();
-        setupLogic();
     }
     
     @Override
@@ -28,12 +29,18 @@ public class LoginScreen implements Screen{
         JLabel titleLabel = new JLabel("Login to SymptoME");
         
         JLabel usernameLabel = new JLabel("Username");
-        JTextField usernameField = new JTextField(20);
+        usernameField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password");
-        JPasswordField passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField(20);
         
         JButton loginButton = new JButton("Login");
+        loginButton.addActionListener((ActionEvent e) -> {
+            handleLoginButtonPressed();
+        });
         JButton registerButton = new JButton("Register");
+        registerButton.addActionListener((ActionEvent e) -> {
+            handleRegisterButtonPressed();
+        });
         
         loginPanel.add(titleLabel);
         loginPanel.add(usernameLabel);
@@ -46,8 +53,17 @@ public class LoginScreen implements Screen{
         return loginPanel;
     }
     
-    private LoginScreen setupLogic() {
-        return this;
+    private Screen handleLoginButtonPressed() {
+        String username = usernameField.getText();
+        // get hash of password
+        // validate user
+        // if success
+            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+        // if fail
+        //  idk
     }
     
+    private Screen handleRegisterButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.REGISTRATION));
+    }
 }
