@@ -3,6 +3,9 @@ package symptome;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,9 +16,11 @@ public class LoginScreen implements Screen{
     private JPanel loginPanel;
     JTextField usernameField;
     JPasswordField passwordField;
+    private final LoginQueryDB loginQueryDB;
     
-    public LoginScreen() {
+    public LoginScreen() throws SQLException {
         loginPanel = setupLoginPanel();
+        loginQueryDB = new LoginQueryDB();
     }
     
     @Override
@@ -37,7 +42,12 @@ public class LoginScreen implements Screen{
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { handleLoginButtonPressed(); }
+            public void actionPerformed(ActionEvent e) { try {
+                handleLoginButtonPressed();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
         });
         JButton registerButton = new JButton("Register");
         registerButton.addActionListener(new ActionListener() {
@@ -56,14 +66,15 @@ public class LoginScreen implements Screen{
         return loginPanel;
     }
     
-    private Screen handleLoginButtonPressed() {
-        String username = usernameField.getText();
-        // get hash of password
+    private Screen handleLoginButtonPressed() throws SQLException {
+        // get hash of password (for future time)
         // validate user
-        // if success
-            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
-        // if fail
-        //  idk
+        if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText()))
+           return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+        else{
+            System.out.println("Incorrect username or password."); //add this to LoginScreen
+            return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+        }
     }
     
     private Screen handleRegisterButtonPressed() {
