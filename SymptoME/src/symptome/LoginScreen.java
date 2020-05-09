@@ -38,9 +38,9 @@ public class LoginScreen implements Screen{
         JLabel titleLabel = new JLabel("Login to SymptoME");
         
         JLabel usernameLabel = new JLabel("Username");
-        usernameField = new JTextField(20);
+        usernameField = new JTextField(15);
         JLabel passwordLabel = new JLabel("Password");
-        passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField(15);
         
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {

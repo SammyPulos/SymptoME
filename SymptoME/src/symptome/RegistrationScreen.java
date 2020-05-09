@@ -1,5 +1,7 @@
 package symptome;
 
+import com.toedter.calendar.JDateChooser;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +13,12 @@ import javax.swing.JTextField;
 
 public class RegistrationScreen implements Screen {
     private JPanel screenPanel;
+    
+    JTextField usernameField;
+    JPasswordField passwordField;
+    JTextField zipField;
+    JDateChooser dobChooser;
+    JLabel notificationLabel;
     
     public RegistrationScreen() {
         screenPanel = setupScreenPanel();
@@ -28,10 +36,14 @@ public class RegistrationScreen implements Screen {
         JLabel titleLabel = new JLabel("Register for SymptoME");
         
         JLabel usernameLabel = new JLabel("Username");
-        JTextField usernameField = new JTextField(20);
+        usernameField = new JTextField(15);
         JLabel passwordLabel = new JLabel("Password");
-        JPasswordField passwordField = new JPasswordField(20);
-        
+        passwordField = new JPasswordField(15);
+        JLabel zipLabel = new JLabel("Zip code");
+        zipField = new JTextField(5);
+        JLabel dobLabel = new JLabel("Date of birth");
+        dobChooser = new JDateChooser();
+                
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -43,13 +55,21 @@ public class RegistrationScreen implements Screen {
             public void actionPerformed(ActionEvent e) { handleConfirmButtonPressed(); }
         });
         
+        notificationLabel = new JLabel("");
+        notificationLabel.setForeground(Color.red);
+        
         screenPanel.add(titleLabel);
         screenPanel.add(usernameLabel);
         screenPanel.add(usernameField);
         screenPanel.add(passwordLabel);
         screenPanel.add(passwordField);
+        screenPanel.add(zipLabel);
+        screenPanel.add(zipField);
+        screenPanel.add(dobLabel);
+        screenPanel.add(dobChooser);
         screenPanel.add(backButton);
         screenPanel.add(confirmButton);
+        screenPanel.add(notificationLabel);
         
         return screenPanel;
     }
@@ -59,7 +79,19 @@ public class RegistrationScreen implements Screen {
     }
     
     private Screen handleConfirmButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+        if (usernameField.getText().equals("") || passwordField.getText().equals("") || zipField.getText().equals("") || dobChooser.getDate() == null) {
+            notificationLabel.setText("Please fill out all fields.");
+            return this;
+        } else if ( !zipField.getText().matches("\\b\\d{5}\\b") ) {
+            notificationLabel.setText("Please enter a valid zip code.");
+            zipField.setText("");
+            return this;
+        } else {
+            // TODO: register account to db after checking if it exists
+            java.sql.Date dob = new java.sql.Date(dobChooser.getDate().getTime());
+            System.out.println(dob); // this dob should work with the db (iirc)
+            return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+        }
     }
         
 }
