@@ -1,5 +1,7 @@
 package symptome;
 
+import java.sql.SQLException;
+
 enum ScreenType {
     LOGIN,
     REGISTRATION,
@@ -13,7 +15,7 @@ public class ScreenFactory {
         return instance_;
     }
     
-    public Screen getScreenOfType(ScreenType screenType) {
+    public Screen getScreenOfType(ScreenType screenType) throws SQLException, IllegalArgumentException {
         switch(screenType) {
             case LOGIN:
                 return new LoginScreen();

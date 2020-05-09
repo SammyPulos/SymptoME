@@ -14,9 +14,10 @@ import javax.swing.JTextField;
 
 public class LoginScreen implements Screen{
     private JPanel loginPanel;
+    private final LoginQueryDB loginQueryDB;
+    
     JTextField usernameField;
     JPasswordField passwordField;
-    private final LoginQueryDB loginQueryDB;
     
     public LoginScreen() throws SQLException {
         loginPanel = setupLoginPanel();
@@ -42,12 +43,13 @@ public class LoginScreen implements Screen{
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { try {
-                handleLoginButtonPressed();
+            public void actionPerformed(ActionEvent e) { 
+                try {
+                    handleLoginButtonPressed();
                 } catch (SQLException ex) {
                     Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
                 }
-}
+            }
         });
         JButton registerButton = new JButton("Register");
         registerButton.addActionListener(new ActionListener() {
@@ -67,7 +69,7 @@ public class LoginScreen implements Screen{
     }
     
     private Screen handleLoginButtonPressed() throws SQLException {
-        // get hash of password (for future time)
+        // TODO: get hash of password
         // validate user
         if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText()))
            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));

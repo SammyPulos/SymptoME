@@ -7,19 +7,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public final class ConnectDB {
-    
     private static final ConnectDB instance_ = new ConnectDB();
-    
     static public ConnectDB instance(){
         return instance_;
     }
     
-    private static Connection connection = null;
-    
-    private ConnectDB(){}
+    private Connection connection = null;
+    private ConnectDB(){ 
+        try {
+            connectDB();
+        } catch (SQLException ex) {
+            System.err.println("Could not connect to database due to exception:\n " + ex.getMessage());
+        }
+    }
     
     // Connects to Docker's image of Oracle Database via JDBC
     public void connectDB() throws SQLException {
@@ -31,18 +36,8 @@ public final class ConnectDB {
             System.out.println("Error loading driver: " + cnfe);
         }
         
-        // Define the Connection URL
-        String host = "localhost";
-        String dbName = "XE";
-        int port = 1521;
-        String oracleURL = "jdbc:oracle:thin:@" + host +
-                            ":" + port + ":" +dbName;
-        String mysqlURL = "jdbc:mysql://" + host +
-                           ":" + port + "/" + dbName;
         // Establish the Connection
-        String username = "system";
-        String password = "oracle";
-        connection = DriverManager.getConnection(oracleURL, username, password);
+        connection = DriverManager.getConnection(getOracleURL(), getUsername(), getPassword());
         
         // Get info about the db system
         DatabaseMetaData dbMetaData = connection.getMetaData();
@@ -62,7 +57,7 @@ public final class ConnectDB {
                     return results;
                 }
                 results.add(rs.getString(1));
-                int i = 2;
+                int i = 2;  // TODO: consider do while
                 while (rs.next()){
                     results.add(rs.getString(i));
                     i++;
@@ -76,4 +71,17 @@ public final class ConnectDB {
         }
         return null;
     } 
+    
+    private String getOracleURL() {
+        String host = "localhost";
+        String dbName = "XE";
+        int port = 1521;
+        return ("jdbc:oracle:thin:@" + host + ":" + port + ":" +dbName);
+    }
+    private String getUsername() {
+        return "system";
+    }
+    private String getPassword() {
+        return "oracle";
+    }
 }

@@ -10,7 +10,6 @@ abstract class QueryDB {
     
     protected QueryDB() throws SQLException{
         this.db = ConnectDB.instance();
-        db.connectDB();
     }
     
     // delegates query to singleton

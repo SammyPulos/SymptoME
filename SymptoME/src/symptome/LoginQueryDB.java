@@ -16,7 +16,7 @@ public class LoginQueryDB extends QueryDB{
     
     public boolean validateUser(String username, String password) throws SQLException{
         ArrayList<String> results = executeQuery(buildQuery(username));
-        if (results.isEmpty())
+        if (results == null || results.isEmpty())
             return false;
         else
             return (password.equals(results.get(0)));
