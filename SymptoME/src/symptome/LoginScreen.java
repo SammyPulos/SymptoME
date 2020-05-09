@@ -1,5 +1,6 @@
 package symptome;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ public class LoginScreen implements Screen{
     
     JTextField usernameField;
     JPasswordField passwordField;
+    JLabel notificationLabel;
     
     public LoginScreen() throws SQLException {
         screenPanel = setupScreenPanel();
@@ -57,6 +59,9 @@ public class LoginScreen implements Screen{
             public void actionPerformed(ActionEvent e) { handleRegisterButtonPressed(); }
         });
         
+        notificationLabel = new JLabel("");
+        notificationLabel.setForeground(Color.red);
+        
         screenPanel.add(titleLabel);
         screenPanel.add(usernameLabel);
         screenPanel.add(usernameField);
@@ -64,18 +69,22 @@ public class LoginScreen implements Screen{
         screenPanel.add(passwordField);
         screenPanel.add(loginButton);
         screenPanel.add(registerButton);
-        
+        screenPanel.add(notificationLabel);
         return screenPanel;
     }
     
     private Screen handleLoginButtonPressed() throws SQLException {
-        // TODO: get hash of password
+        // TODO: get hash of password and dont use getText
         // validate user
-        if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText()))
-           return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
-        else{
-            System.out.println("Incorrect username or password."); //add this to LoginScreen
-            return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+        if (usernameField.getText().equals("") || passwordField.getText().equals("")) {
+            notificationLabel.setText("Please enter both a password and username.");
+            return (this);
+        } else if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText())) {
+            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+        } else {
+            notificationLabel.setText("Incorrect username or password.");
+            System.out.println("Incorrect username or password.");
+            return (this);
         }
     }
     
