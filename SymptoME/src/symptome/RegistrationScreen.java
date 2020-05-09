@@ -10,20 +10,20 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class RegistrationScreen implements Screen {
-    private JPanel registrationPanel;
+    private JPanel screenPanel;
     
     public RegistrationScreen() {
-        registrationPanel = setupRegistrationPanel();
+        screenPanel = setupScreenPanel();
     }
     
     @Override
     public JPanel getPanel() {
-        return registrationPanel;
+        return screenPanel;
     }
     
-    private JPanel setupRegistrationPanel() {
-        registrationPanel = new JPanel();        
-        registrationPanel.setLayout(new FlowLayout());                
+    private JPanel setupScreenPanel() {
+        screenPanel = new JPanel();        
+        screenPanel.setLayout(new FlowLayout());                
         
         JLabel titleLabel = new JLabel("Register for SymptoME");
         
@@ -43,15 +43,15 @@ public class RegistrationScreen implements Screen {
             public void actionPerformed(ActionEvent e) { handleConfirmButtonPressed(); }
         });
         
-        registrationPanel.add(titleLabel);
-        registrationPanel.add(usernameLabel);
-        registrationPanel.add(usernameField);
-        registrationPanel.add(passwordLabel);
-        registrationPanel.add(passwordField);
-        registrationPanel.add(backButton);
-        registrationPanel.add(confirmButton);
+        screenPanel.add(titleLabel);
+        screenPanel.add(usernameLabel);
+        screenPanel.add(usernameField);
+        screenPanel.add(passwordLabel);
+        screenPanel.add(passwordField);
+        screenPanel.add(backButton);
+        screenPanel.add(confirmButton);
         
-        return registrationPanel;
+        return screenPanel;
     }
     
     private Screen handleBackButtonPressed() {

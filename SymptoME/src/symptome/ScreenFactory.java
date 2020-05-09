@@ -5,7 +5,11 @@ import java.sql.SQLException;
 enum ScreenType {
     LOGIN,
     REGISTRATION,
-    HOME
+    HOME,
+    PROFILE,
+    SURVEY,
+    INSIGHTS,
+    HISTORY
 }
 
 public class ScreenFactory {
@@ -23,6 +27,14 @@ public class ScreenFactory {
                 return new RegistrationScreen();
             case HOME:
                 return new HomeScreen();
+            case PROFILE:
+                return new ProfileScreen();
+            case SURVEY:
+                return new SurveyScreen();
+            case INSIGHTS:
+                return new InsightsScreen();
+            case HISTORY:
+                return new HistoryScreen();
             default:
                 throw new IllegalArgumentException("passed screenType not in enum");
         }

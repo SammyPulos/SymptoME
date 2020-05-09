@@ -13,25 +13,25 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class LoginScreen implements Screen{
-    private JPanel loginPanel;
+    private JPanel screenPanel;
     private final LoginQueryDB loginQueryDB;
     
     JTextField usernameField;
     JPasswordField passwordField;
     
     public LoginScreen() throws SQLException {
-        loginPanel = setupLoginPanel();
+        screenPanel = setupScreenPanel();
         loginQueryDB = new LoginQueryDB();
     }
     
     @Override
     public JPanel getPanel() {
-        return loginPanel;
+        return screenPanel;
     }
     
-    private JPanel setupLoginPanel() {
-        loginPanel = new JPanel();        
-        loginPanel.setLayout(new FlowLayout());                
+    private JPanel setupScreenPanel() {
+        screenPanel = new JPanel();        
+        screenPanel.setLayout(new FlowLayout());                
         
         JLabel titleLabel = new JLabel("Login to SymptoME");
         
@@ -57,15 +57,15 @@ public class LoginScreen implements Screen{
             public void actionPerformed(ActionEvent e) { handleRegisterButtonPressed(); }
         });
         
-        loginPanel.add(titleLabel);
-        loginPanel.add(usernameLabel);
-        loginPanel.add(usernameField);
-        loginPanel.add(passwordLabel);
-        loginPanel.add(passwordField);
-        loginPanel.add(loginButton);
-        loginPanel.add(registerButton);
+        screenPanel.add(titleLabel);
+        screenPanel.add(usernameLabel);
+        screenPanel.add(usernameField);
+        screenPanel.add(passwordLabel);
+        screenPanel.add(passwordField);
+        screenPanel.add(loginButton);
+        screenPanel.add(registerButton);
         
-        return loginPanel;
+        return screenPanel;
     }
     
     private Screen handleLoginButtonPressed() throws SQLException {
