@@ -36,6 +36,7 @@ public class SurveyScreen implements Screen {
         feelingSlider.setPaintLabels(true);
         feelingSlider.setPaintTicks(true);
         feelingSlider.setSnapToTicks(true);
+        feelingSlider.setValue(0);
         
         JLabel symptomLabel = new JLabel("Please check those you are experiencing:");
         JCheckBox coughBox = new JCheckBox("Cough"); 
@@ -43,7 +44,7 @@ public class SurveyScreen implements Screen {
         JCheckBox feaverBox = new JCheckBox("Feaver"); 
         JCheckBox painBox = new JCheckBox("Muscle pain"); 
         JCheckBox soreThroatBox = new JCheckBox("Sore throat"); 
-        JCheckBox lossBox = new JCheckBox("Lost taste or smell"); 
+        JCheckBox lossBox = new JCheckBox("Loss of taste or smell"); 
         
         JLabel outsideLabel = new JLabel("Did you go outside today where there were other people?");
         JRadioButton outsideRBY = new JRadioButton("Yes");
@@ -111,8 +112,11 @@ public class SurveyScreen implements Screen {
         return screenPanel;
     }
     
-    private Screen handleSubmitButtonPressed() {
-        return this;
+    private Screen handleSubmitButtonPressed() {       
+        // TODO:make sure fields are actually filled (?)
+        //      make sure they havent already filled out their daily survey
+        //      push results to database
+        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
     }
     
     private Screen handleHomeButtonPressed() {

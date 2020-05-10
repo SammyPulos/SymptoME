@@ -1,9 +1,6 @@
 package symptome;
 
 import java.awt.FlowLayout;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -41,6 +38,7 @@ public class ApplicationWindow {
             return screen;
         } catch (Exception ex) {
             System.err.println("Could not get screen of type " + desiredScreen.toString() + " due to exception:\n " + ex.getMessage());
+            ex.printStackTrace();
             return null;
         }
     }
