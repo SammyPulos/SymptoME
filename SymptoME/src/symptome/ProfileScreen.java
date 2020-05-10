@@ -28,8 +28,7 @@ public class ProfileScreen implements Screen {
         
         // TODO: fetch values from database
         JLabel usernameLabel = new JLabel("Username:");
-        JLabel usernameValueLabel = new JLabel("GET USERNAME FROM DB");
-        usernameValueLabel.setForeground(Color.red);
+        JLabel usernameValueLabel = new JLabel(SessionData.instance().getUsername());
         JLabel zipCodeLabel = new JLabel("Zip code:");
         JLabel zipCodeValueLabel = new JLabel("GET ZIP FROM DB");
         zipCodeValueLabel.setForeground(Color.red);

@@ -24,6 +24,7 @@ public class HomeScreen implements Screen{
         screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
         
         JLabel titleLabel = new JLabel("Home");
+        JLabel helloLabel = new JLabel("Hello " + SessionData.instance().getUsername());        
         
         JButton profileButton = new JButton("Profile");
         profileButton.addActionListener(new ActionListener() {
@@ -52,6 +53,7 @@ public class HomeScreen implements Screen{
         });
 
         screenPanel.add(titleLabel);
+        screenPanel.add(helloLabel);
         screenPanel.add(profileButton);
         screenPanel.add(surveyButton);
         screenPanel.add(insightsButton);

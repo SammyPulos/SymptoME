@@ -80,6 +80,7 @@ public class LoginScreen implements Screen{
             notificationLabel.setText("Please enter both a password and username.");
             return (this);
         } else if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText())) {
+            SessionData.instance().setUsername(usernameField.getText());
             return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
         } else {
             notificationLabel.setText("Incorrect username or password.");
