@@ -47,20 +47,22 @@ public final class ConnectDB {
         System.out.println("Version: " + productVersion);
     } 
     
-    protected ArrayList<String> runQuery(String sqlQuery){
+    protected ArrayList<String> runReadQuery(String sqlQuery){
         ArrayList<String> results = new ArrayList<>();
         try{
             ResultSet rs;
             try (Statement statement = connection.createStatement()) {
                 rs = statement.executeQuery(sqlQuery); 
-                if (!rs.next()){
+                if (!rs.next()){  // no results returned
                     return results;
                 }
-                results.add(rs.getString(1));
-                int i = 2;  // TODO: consider do while
-                while (rs.next()){
-                    results.add(rs.getString(i));
-                    i++;
+                else{
+                    results.add(rs.getString(1));
+                    int i = 2;  // TODO: consider do while
+                    while (rs.next()){
+                        results.add(rs.getString(i));
+                        i++;
+                    }
                 }
             }
             rs.close();
@@ -71,6 +73,16 @@ public final class ConnectDB {
         }
         return null;
     } 
+    
+    protected void runUpdateQuery(String sqlQuery){
+        try (Statement statement = connection.createStatement()) {
+            statement.executeQuery(sqlQuery); 
+        
+        } catch(SQLException e){
+            System.out.println("Error with SQL Query Execution." + e);
+        }
+    } 
+    
     
     private String getOracleURL() {
         String host = "localhost";

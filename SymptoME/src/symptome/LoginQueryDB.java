@@ -10,12 +10,12 @@ public class LoginQueryDB extends QueryDB{
         super();
     }
     
-    private String buildQuery(String username){
+    private String confirmPasswordFor(String username){
         return ("SELECT passhash FROM Users WHERE username='" + username + "'");  
     }
     
     public boolean validateUser(String username, String password) throws SQLException{
-        ArrayList<String> results = executeQuery(buildQuery(username));
+        ArrayList<String> results = executeReadQuery(confirmPasswordFor(username));
         if (results == null || results.isEmpty())
             return false;
         else

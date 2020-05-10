@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -14,6 +17,7 @@ import javax.swing.JTextField;
 
 public class RegistrationScreen implements Screen {
     private JPanel screenPanel;
+    private RegisterQueryDB registerQueryDB;
     
     JTextField usernameField;
     JPasswordField passwordField;
@@ -21,8 +25,9 @@ public class RegistrationScreen implements Screen {
     JDateChooser dobChooser;
     JLabel notificationLabel;
     
-    public RegistrationScreen() {
+    public RegistrationScreen() throws SQLException {
         screenPanel = setupScreenPanel();
+        registerQueryDB = new RegisterQueryDB();
     }
     
     @Override
@@ -53,7 +58,12 @@ public class RegistrationScreen implements Screen {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { handleConfirmButtonPressed(); }
+            public void actionPerformed(ActionEvent e) { try {
+                handleConfirmButtonPressed();
+                } catch (SQLException ex) {
+                    Logger.getLogger(RegistrationScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+}
         });
         
         notificationLabel = new JLabel("");
@@ -79,7 +89,7 @@ public class RegistrationScreen implements Screen {
         return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
     }
     
-    private Screen handleConfirmButtonPressed() {
+    private Screen handleConfirmButtonPressed() throws SQLException {
         if (usernameField.getText().equals("") || passwordField.getText().equals("") || zipField.getText().equals("") || dobChooser.getDate() == null) {
             notificationLabel.setText("Please fill out all fields.");
             return this;
@@ -88,10 +98,15 @@ public class RegistrationScreen implements Screen {
             zipField.setText("");
             return this;
         } else {
-            // TODO: register account to db after checking if it exists
             java.sql.Date dob = new java.sql.Date(dobChooser.getDate().getTime());
-            System.out.println(dob); // this dob should work with the db (iirc)
-            return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+            if (registerQueryDB.registerUser(usernameField.getText(), passwordField.getText(), zipField.getText(), dob)){
+                return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+            }
+            else{
+                notificationLabel.setText("Username already exists.");
+                System.out.println("Username already exists."); 
+                return (this);
+            }
         }
     }
         

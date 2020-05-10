@@ -12,9 +12,11 @@ abstract class QueryDB {
         this.db = ConnectDB.instance();
     }
     
-    // delegates query to singleton
-    protected ArrayList<String> executeQuery(String query){
-       return (db.runQuery(query));
+    protected ArrayList<String> executeReadQuery(String query){
+       return (db.runReadQuery(query));
     };
-        
+    
+    protected void executeUpdateQuery(String query){
+        db.runUpdateQuery(query);
+    }   
 }

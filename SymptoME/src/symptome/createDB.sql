@@ -1,13 +1,13 @@
 -- drop index ReportsIndex;
---drop table Reports;
+-- drop table Reports;
 -- drop index UsersIndex;
---drop table Users;
+-- drop table Users;
 
 -- create table Users (
 --     username varchar(50) not null,
 --     passhash varchar(50) not null,
 --     zipCode  integer,
---     dob      varchar(50),
+--     dob      date,
 --     primary key(username)
 -- );
 
@@ -33,5 +33,4 @@
 
 --create index ReportsIndex on Reports(reportDate);
 
--- NOTE: inserted one user manually because I started with login flow rather than register flow
---insert into Users (username, passhash, zipCode, dob) values ('Deb', 'pass123', 95070, '12/20/80');
+select * from Users;
