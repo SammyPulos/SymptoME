@@ -8,5 +8,4 @@ public class SymptoME {
         applicationWindow.setScreen(ScreenType.LOGIN);
         
     }
-    
 }

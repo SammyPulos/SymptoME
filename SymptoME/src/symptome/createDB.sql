@@ -33,4 +33,4 @@
 
 --create index ReportsIndex on Reports(reportDate);
 
-select * from Users;
+--select * from Users;

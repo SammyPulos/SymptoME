@@ -3,6 +3,7 @@ package symptome;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -10,8 +11,10 @@ import javax.swing.JPanel;
 
 public class ProfileScreen implements Screen {
     private JPanel screenPanel;
+    private ProfileQueryDB profileQueryDB;
     
-    public ProfileScreen() {
+    public ProfileScreen() throws SQLException {
+        profileQueryDB = new ProfileQueryDB();
         screenPanel = setupScreenPanel();
     }
     
@@ -30,11 +33,9 @@ public class ProfileScreen implements Screen {
         JLabel usernameLabel = new JLabel("Username:");
         JLabel usernameValueLabel = new JLabel(SessionData.instance().getUsername());
         JLabel zipCodeLabel = new JLabel("Zip code:");
-        JLabel zipCodeValueLabel = new JLabel("GET ZIP FROM DB");
-        zipCodeValueLabel.setForeground(Color.red);
+        JLabel zipCodeValueLabel = new JLabel(profileQueryDB.retrieveZipCode(SessionData.instance().getUsername()));
         JLabel dobLabel = new JLabel("Date of birth:");
-        JLabel dobValueLabel = new JLabel("GET DoB FROM DB");
-        dobValueLabel.setForeground(Color.red);
+        JLabel dobValueLabel = new JLabel(profileQueryDB.retrieveDOB(SessionData.instance().getUsername()));
         
         JButton homeButton = new JButton("Home");
         homeButton.addActionListener(new ActionListener() {
