@@ -1,8 +1,8 @@
 package symptome;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,7 +21,7 @@ public class HistoryScreen implements Screen{
     
     private JPanel setupScreenPanel() {
         screenPanel = new JPanel();        
-        screenPanel.setLayout(new FlowLayout());                
+        screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
         
         JLabel titleLabel = new JLabel("History:");
 

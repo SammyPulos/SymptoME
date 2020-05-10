@@ -1,12 +1,12 @@
 package symptome;
 
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,7 +33,7 @@ public class LoginScreen implements Screen{
     
     private JPanel setupScreenPanel() {
         screenPanel = new JPanel();        
-        screenPanel.setLayout(new FlowLayout());                
+        screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
         
         JLabel titleLabel = new JLabel("Login to SymptoME");
         
