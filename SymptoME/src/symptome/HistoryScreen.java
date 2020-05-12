@@ -4,7 +4,7 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -148,15 +148,19 @@ public class HistoryScreen implements Screen{
     }
     
     private Screen handleForwardButtonPressed() {
-        Date desiredDate = Date.from(dateChooser.getDate().toInstant().plus(1, ChronoUnit.DAYS));
-        dateChooser.setDate(desiredDate);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateChooser.getDate());
+        cal.add(Calendar.DATE, 1);
+        dateChooser.setDate(cal.getTime());
         updateSurveyFields();
         return this;
     }
     
     private Screen handleBackwardButtonPressed() {
-        Date desiredDate = Date.from(dateChooser.getDate().toInstant().minus(1, ChronoUnit.DAYS));
-        dateChooser.setDate(desiredDate);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateChooser.getDate());
+        cal.add(Calendar.DATE, -1);
+        dateChooser.setDate(cal.getTime());
         updateSurveyFields();
         return this;
     }
