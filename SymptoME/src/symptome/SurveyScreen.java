@@ -160,15 +160,11 @@ public class SurveyScreen implements Screen {
         return true;
     }
     
-    private Screen handleSubmitButtonPressed() {       
-        // TODO:make sure fields are actually filled
+    private Screen handleSubmitButtonPressed() {     
+        
+        // make sure fields are actually filled
         if (!checkCompletedSurvey()){
             notificationLabel.setText("Please complete all fields before submitting.");
-            return this;
-        }
-        // make sure they havent already filled out their daily survey
-        else if (!surveyScreenQueryDB.checkForCompletedSurvey(SessionData.instance().getUsername(), todaysDate)){
-            notificationLabel.setText("Daily survey has already been submitted. Please come back tomorrow!");
             return this;
         }
         // push results to database

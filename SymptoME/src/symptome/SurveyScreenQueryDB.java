@@ -10,12 +10,14 @@ public class SurveyScreenQueryDB extends QueryDB {
     }
     
     public void addReport(Report report){
+        if (checkForExistingDailySurvey(report)) // if daily survey exists, drop tuple
+            executeUpdateQuery("DELETE FROM Reports WHERE reportDate = TO_DATE('" + report.getDate() + "','YYYY-MM-DD') AND username ='" + report.getUsername() + "'");
         executeUpdateQuery(buildReportEntry(report));
     }
     
-    public boolean checkForCompletedSurvey(String username, java.sql.Date todaysDate){
-        ArrayList<String> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + todaysDate + "','YYYY-MM-DD') AND username ='" + username + "'");
-        return (results == null || results.isEmpty()); // daily survey not yet submitted 
+    public boolean checkForExistingDailySurvey(Report report){
+        ArrayList<String> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + report.getDate() + "','YYYY-MM-DD') AND username ='" + report.getUsername() + "'");
+        return (!(results == null) || !(results.isEmpty())); // true if daily survey already exists
     }
     
     public String buildReportEntry(Report report){
