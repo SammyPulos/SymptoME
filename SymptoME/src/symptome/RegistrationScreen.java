@@ -19,11 +19,11 @@ public class RegistrationScreen implements Screen {
     private JPanel screenPanel;
     private RegisterQueryDB registerQueryDB;
     
-    JTextField usernameField;
-    JPasswordField passwordField;
-    JTextField zipField;
-    JDateChooser dobChooser;
-    JLabel notificationLabel;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JTextField zipField;
+    private JDateChooser dobChooser;
+    private JLabel notificationLabel;
     
     public RegistrationScreen() throws SQLException {
         screenPanel = setupScreenPanel();

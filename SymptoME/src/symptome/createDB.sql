@@ -14,8 +14,9 @@
 --create index UsersIndex on Users(username);
 
 -- create table Reports (
---     reportDate      varchar(50) not null,
+--     reportDate      date not null,
 --     username        varchar(50) not null,
+--     feelingRating   integer,
 --     cough           integer,
 --     diffBreathing   integer,
 --     fever           integer,
@@ -23,9 +24,8 @@
 --     soreThroat      integer,
 --     lostTasteSmell  integer,
 --     goneOut         integer,
---     feelingRating   integer,
 --     beenTested      integer,
---     positiveResult  integer,
+--     testResult      integer,
 --     primary key(reportDate, username),
 --     foreign key(username) references Users(username)
 --     on delete cascade
@@ -33,4 +33,5 @@
 
 --create index ReportsIndex on Reports(reportDate);
 
---select * from Users;
+select * from Reports;
+--SELECT * FROM Users WHERE reportDate = TO_DATE('2020-05-12','YYYY-MM-DD')

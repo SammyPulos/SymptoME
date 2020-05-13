@@ -1,7 +1,11 @@
 package symptome;
 
+import java.awt.Color;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.Date;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -13,8 +17,31 @@ import javax.swing.JSlider;
 
 public class SurveyScreen implements Screen {
     private JPanel screenPanel;
+    private final SurveyScreenQueryDB surveyScreenQueryDB;
     
-    public SurveyScreen() {
+    private java.sql.Date todaysDate;
+    private JSlider feelingSlider;
+    
+    private JCheckBox coughBox;
+    private JCheckBox diffBreathingBox;
+    private JCheckBox feverBox;
+    private JCheckBox painBox;
+    private JCheckBox soreThroatBox;
+    private JCheckBox lossBox;
+    
+    private JRadioButton outsideRBY;
+    private JRadioButton outsideRBN;
+    private JRadioButton testedRBY;
+    private JRadioButton testedRBN;
+    private JRadioButton resultRBY;
+    private JRadioButton resultRBN;
+    private JRadioButton resultRBNA;
+    
+    private JLabel notificationLabel;
+    
+    // Builder Screen: Director
+    public SurveyScreen() throws SQLException {
+        surveyScreenQueryDB = new SurveyScreenQueryDB();
         screenPanel = setupScreenPanel();
     }
     
@@ -30,40 +57,41 @@ public class SurveyScreen implements Screen {
         JLabel titleLabel = new JLabel("Survey:");
         
         // TODO: check if they already had their survey for today
+        todaysDate = new java.sql.Date((new Date()).getTime());
         JLabel feelingLabel = new JLabel("On a scale of 0-10 how good do you feel?");
-        JSlider feelingSlider = new JSlider(0,10);
+        feelingSlider = new JSlider(0,10);
         feelingSlider.setMajorTickSpacing(1);
         feelingSlider.setPaintLabels(true);
         feelingSlider.setPaintTicks(true);
         feelingSlider.setSnapToTicks(true);
         feelingSlider.setValue(0);
         
-        JLabel symptomLabel = new JLabel("Please check those you are experiencing:");
-        JCheckBox coughBox = new JCheckBox("Cough"); 
-        JCheckBox diffBreathingBox = new JCheckBox("Difficulity Breathing"); 
-        JCheckBox feaverBox = new JCheckBox("Feaver"); 
-        JCheckBox painBox = new JCheckBox("Muscle pain"); 
-        JCheckBox soreThroatBox = new JCheckBox("Sore throat"); 
-        JCheckBox lossBox = new JCheckBox("Loss of taste or smell"); 
+        JLabel symptomLabel = new JLabel("Please check the symptoms you are experiencing:");
+        coughBox = new JCheckBox("Cough"); 
+        diffBreathingBox = new JCheckBox("Difficulty Breathing"); 
+        feverBox = new JCheckBox("Fever"); 
+        painBox = new JCheckBox("Muscle pain"); 
+        soreThroatBox = new JCheckBox("Sore throat"); 
+        lossBox = new JCheckBox("Loss of taste or smell"); 
         
-        JLabel outsideLabel = new JLabel("Did you go outside today where there were other people?");
-        JRadioButton outsideRBY = new JRadioButton("Yes");
-        JRadioButton outsideRBN = new JRadioButton("No");
+        JLabel outsideLabel = new JLabel("Did you go to an area where there were other people today?");
+        outsideRBY = new JRadioButton("Yes");
+        outsideRBN = new JRadioButton("No");
         ButtonGroup outsideBG = new ButtonGroup();
         outsideBG.add(outsideRBY);
         outsideBG.add(outsideRBN);
         
         JLabel testedLabel = new JLabel("Were you tested for COVID-19 today?");
-        JRadioButton testedRBY = new JRadioButton("Yes");
-        JRadioButton testedRBN = new JRadioButton("No");
+        testedRBY = new JRadioButton("Yes");
+        testedRBN = new JRadioButton("No");
         ButtonGroup testedBG = new ButtonGroup();
         testedBG.add(testedRBY);
         testedBG.add(testedRBN);
         
         JLabel resultLabel = new JLabel("If you recieved your test results today what were they?");
-        JRadioButton resultRBY = new JRadioButton("Positive");
-        JRadioButton resultRBN = new JRadioButton("Negative");
-        JRadioButton resultRBNA = new JRadioButton("No results");
+        resultRBY = new JRadioButton("Positive");
+        resultRBN = new JRadioButton("Negative");
+        resultRBNA = new JRadioButton("No results");
         ButtonGroup resultBG = new ButtonGroup();
         resultBG.add(resultRBY);
         resultBG.add(resultRBN);
@@ -85,13 +113,16 @@ public class SurveyScreen implements Screen {
             public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
         });
         
+        notificationLabel = new JLabel("");
+        notificationLabel.setForeground(Color.red);
+        
         screenPanel.add(titleLabel);
         screenPanel.add(feelingLabel);
         screenPanel.add(feelingSlider);
         screenPanel.add(symptomLabel);
         screenPanel.add(coughBox);
         screenPanel.add(diffBreathingBox);
-        screenPanel.add(feaverBox);
+        screenPanel.add(feverBox);
         screenPanel.add(painBox);
         screenPanel.add(soreThroatBox);
         screenPanel.add(lossBox);
@@ -108,15 +139,44 @@ public class SurveyScreen implements Screen {
         screenPanel.add(submitButton);
         screenPanel.add(homeButton);
         screenPanel.add(logoutButton);
+        screenPanel.add(notificationLabel);
         
         return screenPanel;
     }
     
+     public boolean checkCompletedSurvey(){
+        // checking "Did you go outside today where there were other people?" Y/N
+        if (!outsideRBY.isSelected() && !outsideRBN.isSelected()){
+            return false;
+        }
+        // checking "Were you tested for COVID-19 today?" Y/N
+        else if (!testedRBY.isSelected() && !testedRBN.isSelected()){
+            return false;
+        }
+        // checking "If you received your test results today, what were they?" P/N/NA
+        else if (!resultRBY.isSelected() && !resultRBN.isSelected() && !resultRBNA.isSelected()){
+            return false;
+        }
+        return true;
+    }
+    
     private Screen handleSubmitButtonPressed() {       
-        // TODO:make sure fields are actually filled (?)
-        //      make sure they havent already filled out their daily survey
-        //      push results to database
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+        // TODO:make sure fields are actually filled
+        if (!checkCompletedSurvey()){
+            notificationLabel.setText("Please complete all fields before submitting.");
+            return this;
+        }
+        // make sure they havent already filled out their daily survey
+        else if (!surveyScreenQueryDB.checkForCompletedSurvey(SessionData.instance().getUsername(), todaysDate)){
+            notificationLabel.setText("Daily survey has already been submitted. Please come back tomorrow!");
+            return this;
+        }
+        // push results to database
+        else{
+            Report report = new Report.ReportBuilder().withUsername(SessionData.instance().getUsername()).withDate(todaysDate).withFeeling(feelingSlider).withCough(coughBox).withDiffBreathing(diffBreathingBox).withFever(feverBox).withPain(painBox).withSoreThroat(soreThroatBox).withLoss(lossBox).withOutsideRBY(outsideRBY).withOutsideRBN(outsideRBN).withTestedRBY(testedRBY).withTestedRBN(testedRBN).withResultRBY(resultRBY).withResultRBN(resultRBN).withResultRBNA(resultRBNA).build();
+            surveyScreenQueryDB.addReport(report);
+            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+        }
     }
     
     private Screen handleHomeButtonPressed() {

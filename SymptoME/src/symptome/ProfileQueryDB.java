@@ -9,13 +9,13 @@ public class ProfileQueryDB extends QueryDB {
         super();
     }
      
-    String retrieveZipCode(String username){
+    public String retrieveZipCode(String username){
         ArrayList<String> results = executeReadQuery("SELECT zipCode FROM Users WHERE username='" + username + "'"); 
         return results.get(0);
     }
       
-    String retrieveDOB(String username){
-        ArrayList<String> results = executeReadQuery("SELECT dob FROM Users WHERE username='" + username + "'");  
+    public String retrieveDOB(String username){
+        ArrayList<String> results = executeReadQuery("SELECT dob FROM Users WHERE username='" + username + "'"); 
         return results.get(0).substring(0,10);
     }
 }
