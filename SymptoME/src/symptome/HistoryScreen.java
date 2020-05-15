@@ -4,6 +4,8 @@ import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +61,15 @@ public class HistoryScreen implements Screen{
         JLabel titleLabel = new JLabel("History:");
         
         dateChooser = new JDateChooser(new Date());
+        
+        dateChooser.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if ("date".equals(evt.getPropertyName())) {
+                    updateSurveyFields();
+                }
+            }
+        });
         
         JButton forwardButton = new JButton("Next day");
         forwardButton.addActionListener(new ActionListener() {
@@ -160,7 +171,6 @@ public class HistoryScreen implements Screen{
         cal.setTime(dateChooser.getDate());
         cal.add(Calendar.DATE, 1);
         dateChooser.setDate(cal.getTime());
-        updateSurveyFields();
         return this;
     }
     
@@ -169,7 +179,6 @@ public class HistoryScreen implements Screen{
         cal.setTime(dateChooser.getDate());
         cal.add(Calendar.DATE, -1);
         dateChooser.setDate(cal.getTime());
-        updateSurveyFields();
         return this;
     }
     
@@ -182,18 +191,12 @@ public class HistoryScreen implements Screen{
         else{
             notificationLabel.setText(""); //should be empty string to show nothing
             feelingSlider.setValue(Integer.parseInt(results.get(2)));
-            if (Integer.parseInt(results.get(3)) == 1)
-                coughBox.setSelected(true);
-            if (Integer.parseInt(results.get(4)) == 1)
-                diffBreathingBox.setSelected(true);
-            if (Integer.parseInt(results.get(5)) == 1)
-                feverBox.setSelected(true); 
-            if (Integer.parseInt(results.get(6)) == 1)
-                painBox.setSelected(true); 
-            if (Integer.parseInt(results.get(7)) == 1)
-                soreThroatBox.setSelected(true); 
-            if (Integer.parseInt(results.get(8)) == 1)
-                lossBox.setSelected(true);
+            coughBox.setSelected(Integer.parseInt(results.get(3)) == 1);
+            diffBreathingBox.setSelected(Integer.parseInt(results.get(4)) == 1);
+            feverBox.setSelected(Integer.parseInt(results.get(5)) == 1); 
+            painBox.setSelected(Integer.parseInt(results.get(6)) == 1); 
+            soreThroatBox.setSelected(Integer.parseInt(results.get(7)) == 1); 
+            lossBox.setSelected(Integer.parseInt(results.get(8)) == 1);
             if (Integer.parseInt(results.get(9)) == 1)
                 outsideRBY.setSelected(true);
             else
@@ -205,9 +208,9 @@ public class HistoryScreen implements Screen{
             if (Integer.parseInt(results.get(11)) == 1)
                 resultRBY.setSelected(true);
             else if (Integer.parseInt(results.get(11)) == 2)
-            resultRBNA.setSelected(true);
+                resultRBNA.setSelected(true);
             else
-            resultRBN.setSelected(true);
+                resultRBN.setSelected(true);
         }
     }
     
