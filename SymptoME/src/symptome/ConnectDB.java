@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -48,17 +49,18 @@ public final class ConnectDB {
         ArrayList<String> results = new ArrayList<>();
         try{
             ResultSet rs;
+            ResultSetMetaData rsmd;
+            int columnsNumber;
             try (Statement statement = connection.createStatement()) {
                 rs = statement.executeQuery(sqlQuery); 
+                rsmd = rs.getMetaData();
+                columnsNumber = rsmd.getColumnCount();
                 if (!rs.next()){  // no results returned
                     return results;
                 }
                 else{
-                    results.add(rs.getString(1));
-                    int i = 2;  // TODO: consider do while
-                    while (rs.next()){
+                    for (int i = 1; i <= columnsNumber; i++){
                         results.add(rs.getString(i));
-                        i++;
                     }
                 }
             }

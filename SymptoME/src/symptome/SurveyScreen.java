@@ -74,7 +74,7 @@ public class SurveyScreen implements Screen {
         soreThroatBox = new JCheckBox("Sore throat"); 
         lossBox = new JCheckBox("Loss of taste or smell"); 
         
-        JLabel outsideLabel = new JLabel("Did you go to an area where there were other people today?");
+        JLabel outsideLabel = new JLabel("Did you go outside where there were other people today?");
         outsideRBY = new JRadioButton("Yes");
         outsideRBN = new JRadioButton("No");
         ButtonGroup outsideBG = new ButtonGroup();

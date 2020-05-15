@@ -69,7 +69,6 @@ public class SurveyScreenQueryDB extends QueryDB {
                 "fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult) " +
                 "VALUES (TO_DATE('" + reportDate + "','YYYY-MM-DD'), '" + username + "', " + feelingRating + 
                 ", " + cough + ", " + diffBreathing + ", " + fever + ", " + musclePain + ", " + soreThroat +
-                ", " + lostTasteSmell + ", " + goneOut + ", " + beenTested + ", " + testResult + ")" );
-              
+                ", " + lostTasteSmell + ", " + goneOut + ", " + beenTested + ", " + testResult + ")" );    
     }     
 }

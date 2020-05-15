@@ -33,5 +33,6 @@
 
 --create index ReportsIndex on Reports(reportDate);
 
-select * from Reports;
---SELECT * FROM Users WHERE reportDate = TO_DATE('2020-05-12','YYYY-MM-DD')
+-- INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
+--                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Deb', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
+-- select * from Reports;
