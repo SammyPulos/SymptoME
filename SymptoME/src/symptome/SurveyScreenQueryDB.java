@@ -71,4 +71,9 @@ public class SurveyScreenQueryDB extends QueryDB {
                 ", " + cough + ", " + diffBreathing + ", " + fever + ", " + musclePain + ", " + soreThroat +
                 ", " + lostTasteSmell + ", " + goneOut + ", " + beenTested + ", " + testResult + ")" );    
     }     
+      // queries Results table for report based on provided username and targetDate
+    public ArrayList<String> retrieveReport(String username, java.sql.Date targetDate){
+        ArrayList<String> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + targetDate + "','YYYY-MM-DD') AND username ='" + username + "'");   
+        return results;
+    }
 }
