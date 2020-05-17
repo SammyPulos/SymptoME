@@ -14,7 +14,7 @@ public class InsightsSameSympsQueryDB extends QueryDB {
     
     public int numUsers() throws SQLException{
         ArrayList<String[]> results = executeReadQuery("SELECT * FROM Users");
-        return results.size() - 1 ; // return all but current user
+        return results.size(); // return all but current user
     } 
    
     public int numUsersWithSameSymptoms() {
@@ -34,7 +34,7 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         Set<String> sameSympUsers = new HashSet<String>(); 
         for (String[] row : allUsersReports){
             int sameCount = 0;
-            while (row[sameCount+3].equals(currUserReport.get(0)[sameCount+3])) {
+            while (row[sameCount+3].equals(currUserReport.get(0)[sameCount+3]) && (sameCount < 6)) {
                     ++sameCount;
             }
             if (sameCount == 6){ // if all symptoms are the same, add user to set

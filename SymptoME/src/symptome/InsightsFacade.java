@@ -13,7 +13,12 @@ public class InsightsFacade {
     
     // TODO: actually figure out the percents
     public double getPercentSameSymptoms() throws SQLException {
-        return (100 * insightsSameSympsQueryDB.numUsersWithSameSymptoms() / insightsSameSympsQueryDB.numUsers());
+        Integer numUsers = (insightsSameSympsQueryDB.numUsers()-1);
+        if (numUsers == 0) { 
+            return 0; 
+        } else {
+            return (100 * insightsSameSympsQueryDB.numUsersWithSameSymptoms() / numUsers);
+        }
     }
     public double getPercentSameSymptomsTested() {
         return 1;
