@@ -1,14 +1,19 @@
 package symptome;
 
-public class InsightData {
+import java.sql.SQLException;
+
+public class InsightsFacade {
+    // insights concrete queryDB classes
+    InsightsSameSympsQueryDB insightsSameSympsQueryDB;
     
-    public InsightData() {
+    public InsightsFacade() throws SQLException {
         // TODO
+        this.insightsSameSympsQueryDB = new InsightsSameSympsQueryDB();
     }
     
     // TODO: actually figure out the percents
-    public double getPercentSameSymptoms() {
-        return 0;
+    public double getPercentSameSymptoms() throws SQLException {
+        return (100 * insightsSameSympsQueryDB.numUsersWithSameSymptoms() / insightsSameSympsQueryDB.numUsers());
     }
     public double getPercentSameSymptomsTested() {
         return 1;

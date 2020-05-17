@@ -12,7 +12,7 @@ abstract class QueryDB {
         this.db = ConnectDB.instance();
     }
     
-    protected ArrayList<String> executeReadQuery(String query){
+    protected ArrayList<String[]> executeReadQuery(String query){
        return (db.runReadQuery(query));
     };
     

@@ -2,7 +2,7 @@
 -- drop table Reports;
 -- drop index UsersIndex;
 -- drop table Users;
-
+-- 
 -- create table Users (
 --     username varchar(50) not null,
 --     passhash varchar(50) not null,
@@ -31,8 +31,7 @@
 --     on delete cascade
 -- );
 
---create index ReportsIndex on Reports(reportDate);
-
--- INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
---                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Deb', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
--- select * from Reports;
+-- --create index ReportsIndex on Reports(reportDate);
+--  INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
+--                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Dan', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
+SELECT * FROM Reports;

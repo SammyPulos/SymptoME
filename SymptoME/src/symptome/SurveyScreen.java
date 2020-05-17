@@ -190,29 +190,29 @@ public class SurveyScreen implements Screen {
     private void updateSurveyFields() {
         JDateChooser dateChooser = new JDateChooser(new Date());
         java.sql.Date targetDate = new java.sql.Date(dateChooser.getDate().getTime());
-        ArrayList<String> results = surveyScreenQueryDB.retrieveReport(SessionData.instance().getUsername(), targetDate);
+        ArrayList<String[]> results = surveyScreenQueryDB.retrieveReport(SessionData.instance().getUsername(), targetDate);
         if ((results == null) || (results.isEmpty())){  // if no survey taken on that day
         }
         else{
             notificationLabel.setText(""); //should be empty string to show nothing
-            feelingSlider.setValue(Integer.parseInt(results.get(2)));
-            coughBox.setSelected(Integer.parseInt(results.get(3)) == 1);
-            diffBreathingBox.setSelected(Integer.parseInt(results.get(4)) == 1);
-            feverBox.setSelected(Integer.parseInt(results.get(5)) == 1); 
-            painBox.setSelected(Integer.parseInt(results.get(6)) == 1); 
-            soreThroatBox.setSelected(Integer.parseInt(results.get(7)) == 1); 
-            lossBox.setSelected(Integer.parseInt(results.get(8)) == 1);
-            if (Integer.parseInt(results.get(9)) == 1)
+            feelingSlider.setValue(Integer.parseInt(results.get(0)[2]));
+            coughBox.setSelected(Integer.parseInt(results.get(0)[3]) == 1);
+            diffBreathingBox.setSelected(Integer.parseInt(results.get(0)[4]) == 1);
+            feverBox.setSelected(Integer.parseInt(results.get(0)[5]) == 1); 
+            painBox.setSelected(Integer.parseInt(results.get(0)[6]) == 1); 
+            soreThroatBox.setSelected(Integer.parseInt(results.get(0)[7]) == 1); 
+            lossBox.setSelected(Integer.parseInt(results.get(0)[8]) == 1);
+            if (Integer.parseInt(results.get(0)[9]) == 1)
                 outsideRBY.setSelected(true);
             else
                 outsideRBN.setSelected(true);
-            if (Integer.parseInt(results.get(10)) == 1)
+            if (Integer.parseInt(results.get(0)[10]) == 1)
                 testedRBY.setSelected(true);
             else
                 testedRBN.setSelected(true);
-            if (Integer.parseInt(results.get(11)) == 1)
+            if (Integer.parseInt(results.get(0)[11]) == 1)
                 resultRBY.setSelected(true);
-            else if (Integer.parseInt(results.get(11)) == 2)
+            else if (Integer.parseInt(results.get(0)[11]) == 2)
                 resultRBNA.setSelected(true);
             else
                 resultRBN.setSelected(true);

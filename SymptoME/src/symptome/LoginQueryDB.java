@@ -15,10 +15,14 @@ public class LoginQueryDB extends QueryDB{
     }
     
     public boolean validateUser(String username, String password) throws SQLException{
-        ArrayList<String> results = executeReadQuery(confirmPasswordFor(username));
-        if (results == null || results.isEmpty())
+        ArrayList<String[]> results = executeReadQuery(confirmPasswordFor(username));
+        if (results == null || results.isEmpty()){
+            System.out.println("not returning anything");
             return false;
-        else
-            return (password.equals(results.get(0)));
+        }
+        else{
+            System.out.println(results.get(0)[0]);
+            return (password.equals(results.get(0)[0]));
+        }
     }        
 }

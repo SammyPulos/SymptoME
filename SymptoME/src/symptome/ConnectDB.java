@@ -45,28 +45,54 @@ public final class ConnectDB {
         System.out.println("Version: " + productVersion);
     } 
     
-    protected ArrayList<String> runReadQuery(String sqlQuery){
-        ArrayList<String> results = new ArrayList<>();
+//    protected ArrayList<String> runReadQuery(String sqlQuery){
+//        ArrayList<String> results = new ArrayList<>();
+//        try{
+//            ResultSet rs;
+//            ResultSetMetaData rsmd;
+//            int columnsNumber;
+//            try (Statement statement = connection.createStatement()) {
+//                rs = statement.executeQuery(sqlQuery); 
+//                rsmd = rs.getMetaData();
+//                columnsNumber = rsmd.getColumnCount();
+//                if (!rs.next()){  // no results returned
+//                    return results;
+//                }
+//                else{
+//                    for (int i = 1; i <= columnsNumber; i++){
+//                        results.add(rs.getString(i));
+//                    }
+//                }
+//            }
+//            rs.close();
+//            return results;
+//   
+//        } catch(SQLException e){
+//            System.out.println("Error with SQL Query Execution." + e);
+//        }
+//        return null;
+//    } 
+    
+    protected ArrayList<String[]> runReadQuery(String sqlQuery){
+        ArrayList<String[]> results = new ArrayList<>();
+        int numFields;
         try{
             ResultSet rs;
-            ResultSetMetaData rsmd;
-            int columnsNumber;
             try (Statement statement = connection.createStatement()) {
                 rs = statement.executeQuery(sqlQuery); 
-                rsmd = rs.getMetaData();
-                columnsNumber = rsmd.getColumnCount();
-                if (!rs.next()){  // no results returned
-                    return results;
-                }
-                else{
-                    for (int i = 1; i <= columnsNumber; i++){
-                        results.add(rs.getString(i));
+                numFields = rs.getMetaData().getColumnCount();
+                while (rs.next()) {
+                    String[] row = new String[numFields];
+                    for (int col = 1; col <= numFields; col++) {
+                        Object obj = rs.getObject(col);
+                        row[col-1] = (obj == null) ? null:obj.toString();
                     }
+                    results.add(row);
                 }
             }
             rs.close();
             return results;
-   
+            
         } catch(SQLException e){
             System.out.println("Error with SQL Query Execution." + e);
         }

@@ -10,12 +10,12 @@ public class ProfileQueryDB extends QueryDB {
     }
      
     public String retrieveZipCode(String username){
-        ArrayList<String> results = executeReadQuery("SELECT zipCode FROM Users WHERE username='" + username + "'"); 
-        return results.get(0);
+        ArrayList<String[]> results = executeReadQuery("SELECT zipCode FROM Users WHERE username='" + username + "'"); 
+        return results.get(0)[0];
     }
       
     public String retrieveDOB(String username){
-        ArrayList<String> results = executeReadQuery("SELECT dob FROM Users WHERE username='" + username + "'"); 
-        return results.get(0).substring(0,10);
+        ArrayList<String[]> results = executeReadQuery("SELECT dob FROM Users WHERE username='" + username + "'"); 
+        return results.get(0)[0].substring(0,10);
     }
 }

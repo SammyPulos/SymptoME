@@ -3,6 +3,7 @@ package symptome;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -11,7 +12,7 @@ import javax.swing.JPanel;
 public class InsightsScreen implements Screen{
     private JPanel screenPanel;
     
-    public InsightsScreen() {
+    public InsightsScreen() throws SQLException {
         screenPanel = setupScreenPanel();
     }
     
@@ -20,7 +21,7 @@ public class InsightsScreen implements Screen{
         return screenPanel;
     }
     
-    private JPanel setupScreenPanel() {
+    private JPanel setupScreenPanel() throws SQLException {
         screenPanel = new JPanel();        
         screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
         
@@ -47,16 +48,16 @@ public class InsightsScreen implements Screen{
         return screenPanel;
     }
     
-    private Screen SetupInsights() {
+    private Screen SetupInsights() throws SQLException {
         if (screenPanel == null) { return this; }
         
-        InsightData insightData = new InsightData(); // TODO: need to actually get/generate this
+        InsightsFacade insightsFacade = new InsightsFacade(); // TODO: need to actually get/generate this
         
-        JLabel percentSame = new JLabel("<html><br/>Overall " + insightData.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point</html>");
-        JLabel percentSameSymptomsTested = new JLabel("<html><br/>Out of people with symptoms matching your most recent report " + insightData.getPercentSameSymptomsTested() + "% have been tested for COVID-19</html>");
-        JLabel percentSameSymptomsResults = new JLabel("    Out of these " + insightData.getPercentSameSymptomsPositive() + "% have tested positive and " + insightData.getPercentSameSymptomsNegative() + "% have tested negative");
-        JLabel percentSameLocationTested = new JLabel("<html><br/>In your area " + insightData.getPercentSameLocationTested() + "% of users have been tested for COVID-19</html>");
-        JLabel percentSameLocationResults = new JLabel("    Out of these " + insightData.getPercentSameLocationPositive() + "% have tested positive and " + insightData.getPercentSameLocationNegative() + "% have tested negative");
+        JLabel percentSame = new JLabel("<html><br/>Overall " + insightsFacade.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point</html>");
+        JLabel percentSameSymptomsTested = new JLabel("<html><br/>Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSameSymptomsTested() + "% have been tested for COVID-19</html>");
+        JLabel percentSameSymptomsResults = new JLabel("    Out of these " + insightsFacade.getPercentSameSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSameSymptomsNegative() + "% have tested negative");
+        JLabel percentSameLocationTested = new JLabel("<html><br/>In your area " + insightsFacade.getPercentSameLocationTested() + "% of users have been tested for COVID-19</html>");
+        JLabel percentSameLocationResults = new JLabel("    Out of these " + insightsFacade.getPercentSameLocationPositive() + "% have tested positive and " + insightsFacade.getPercentSameLocationNegative() + "% have tested negative");
         JLabel feelingLabel = new JLabel("<html><br/>Feeling trend: [REMEMBER TO ADD A GRAPH]</html>");
         feelingLabel.setForeground(Color.red);
         

@@ -16,7 +16,7 @@ public class SurveyScreenQueryDB extends QueryDB {
     }
     
     public boolean checkForExistingDailySurvey(Report report){
-        ArrayList<String> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + report.getDate() + "','YYYY-MM-DD') AND username ='" + report.getUsername() + "'");
+        ArrayList<String[]> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + report.getDate() + "','YYYY-MM-DD') AND username ='" + report.getUsername() + "'");
         return (!(results == null) || !(results.isEmpty())); // true if daily survey already exists
     }
     
@@ -72,8 +72,8 @@ public class SurveyScreenQueryDB extends QueryDB {
                 ", " + lostTasteSmell + ", " + goneOut + ", " + beenTested + ", " + testResult + ")" );    
     }     
       // queries Results table for report based on provided username and targetDate
-    public ArrayList<String> retrieveReport(String username, java.sql.Date targetDate){
-        ArrayList<String> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + targetDate + "','YYYY-MM-DD') AND username ='" + username + "'");   
+    public ArrayList<String[]> retrieveReport(String username, java.sql.Date targetDate){
+        ArrayList<String[]> results = executeReadQuery("SELECT * FROM Reports WHERE reportDate = TO_DATE('" + targetDate + "','YYYY-MM-DD') AND username ='" + username + "'");   
         return results;
     }
 }

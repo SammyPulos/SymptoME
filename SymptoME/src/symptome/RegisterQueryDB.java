@@ -22,7 +22,7 @@ public class RegisterQueryDB extends QueryDB{
     }
    
     public boolean registerUser(String username, String password, String zipCode, java.sql.Date dob) throws SQLException{
-        ArrayList<String> results = executeReadQuery(searchUsername(username));
+        ArrayList<String[]> results = executeReadQuery(searchUsername(username));
         if (results == null || results.isEmpty()){
             executeUpdateQuery(addUser(username, password, zipCode, dob));
             return true;
