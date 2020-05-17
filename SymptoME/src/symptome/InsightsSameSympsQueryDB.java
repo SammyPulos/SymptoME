@@ -12,6 +12,16 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         super();
     }
     
+    // calculates percentage of users with same symptoms
+    public double calcPercUsersWithSameSmyptoms() throws SQLException{
+        Integer numUsers = (numUsers()-1);
+        if (numUsers == 0) { 
+            return 0; 
+        } else {
+            return (100 * numUsersWithSameSymptoms() / numUsers);
+        }
+    }
+    
     public int numUsers() throws SQLException{
         ArrayList<String[]> results = executeReadQuery("SELECT * FROM Users");
         return results.size(); // return all but current user

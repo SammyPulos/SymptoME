@@ -34,4 +34,4 @@
 -- --create index ReportsIndex on Reports(reportDate);
 --  INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
 --                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Dan', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
-SELECT * FROM Reports;
+SELECT * FROM Reports WHERE USERNAME != 'Deb';
