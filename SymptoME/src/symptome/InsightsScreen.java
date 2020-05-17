@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 public class InsightsScreen implements Screen{
     private JPanel screenPanel;
     
+    private JLabel notificationLabel;
+    
     public InsightsScreen() throws SQLException {
         screenPanel = setupScreenPanel();
     }
@@ -53,6 +55,11 @@ public class InsightsScreen implements Screen{
         
         InsightsFacade insightsFacade = new InsightsFacade(); // TODO: need to actually get/generate this
         
+        if (insightsFacade.getPercentSameSymptoms() < 0){ // check that user has taken daily survey
+            notificationLabel = new JLabel("Please submit your daily survey in order to receive the latest insights.");
+            notificationLabel.setForeground(Color.red);
+            screenPanel.add(notificationLabel);
+        }
         JLabel percentSame = new JLabel("<html><br/>Overall " + insightsFacade.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point</html>");
         JLabel percentSameSymptomsTested = new JLabel("<html><br/>Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSameSymptomsTested() + "% have been tested for COVID-19</html>");
         JLabel percentSameSymptomsResults = new JLabel("    Out of these " + insightsFacade.getPercentSameSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSameSymptomsNegative() + "% have tested negative");

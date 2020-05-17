@@ -14,8 +14,7 @@ public class InsightsSameSympsQueryDB extends QueryDB {
     
     public int numUsers() throws SQLException{
         ArrayList<String[]> results = executeReadQuery("SELECT * FROM Users");
-        System.out.println(results.size());
-        return results.size();
+        return results.size() - 1 ; // return all but current user
     } 
    
     public int numUsersWithSameSymptoms() {
@@ -24,6 +23,9 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         
         // 1. Retrieve curr user's report
         ArrayList<String[]> currUserReport = executeReadQuery("SELECT * FROM Reports WHERE username = '" + username + "' AND reportDate = TO_DATE('" + todaysDate + "','YYYY-MM-DD')");
+        if (currUserReport == null || currUserReport.isEmpty()){
+            return -1;
+        }
         
         // 2. Retrieve all reports where username != curr user
         ArrayList<String[]> allUsersReports = executeReadQuery("SELECT * FROM Reports WHERE username != '" + username + "'");
@@ -32,13 +34,8 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         Set<String> sameSympUsers = new HashSet<String>(); 
         for (String[] row : allUsersReports){
             int sameCount = 0;
-            for (int i = 3; i < 9; i++){ // only comparing symptoms
-                if (row[i].equals(currUserReport.get(0)[i])){
-                    sameCount++;
-                }
-                else {
-                    break;
-                }
+            while (row[sameCount+3].equals(currUserReport.get(0)[sameCount+3])) {
+                    ++sameCount;
             }
             if (sameCount == 6){ // if all symptoms are the same, add user to set
                 sameSympUsers.add(row[1]);
