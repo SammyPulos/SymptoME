@@ -31,7 +31,10 @@
 --     on delete cascade
 -- );
 
--- --create index ReportsIndex on Reports(reportDate);
+--create index ReportsIndex on Reports(reportDate);
 --  INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
---                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Dan', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
-SELECT * FROM Reports WHERE USERNAME != 'Deb';
+--                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Deb', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
+
+--SELECT DISTINCT username FROM Reports WHERE beenTested = 1 AND (username = 'BB' OR username = 'Jan' OR username = 'John' OR username = 'h' OR username = 'K')
+
+select * from reports where username = 'h'

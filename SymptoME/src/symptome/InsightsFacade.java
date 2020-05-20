@@ -3,8 +3,6 @@ package symptome;
 import java.sql.SQLException;
 
 public class InsightsFacade {
-    // Insight data
-    private double percentSameSymptoms;
     
     // insights concrete queryDB classes
     InsightsSameSympsQueryDB insightsSameSympsQueryDB;
@@ -12,14 +10,13 @@ public class InsightsFacade {
     public InsightsFacade() throws SQLException {
         // TODO
         this.insightsSameSympsQueryDB = new InsightsSameSympsQueryDB();
-        this.percentSameSymptoms = insightsSameSympsQueryDB.calcPercUsersWithSameSmyptoms();
     }
     
     public double getPercentSameSymptoms() throws SQLException {
-        return percentSameSymptoms;
+        return(insightsSameSympsQueryDB.calcPercentSameSymptoms());
     }
-    public double getPercentSameSymptomsTested() {
-        return 1;
+    public double getPercentSameSymptomsTested() throws SQLException {
+        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTested());
     }
     public double getPercentSameSymptomsPositive() {
         return 2;
