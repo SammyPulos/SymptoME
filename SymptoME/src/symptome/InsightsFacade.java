@@ -18,11 +18,11 @@ public class InsightsFacade {
     public double getPercentSameSymptomsTested() throws SQLException {
         return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTested());
     }
-    public double getPercentSameSymptomsPositive() {
-        return 2;
+    public double getPercentSameSymptomsPositive() throws SQLException {
+        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTestedPositive());
     }
-    public double getPercentSameSymptomsNegative() {
-        return 3;
+    public double getPercentSameSymptomsNegative() throws SQLException {
+        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTestedNegative());
     }
     public double getPercentSameLocationTested() {
         return 4;
