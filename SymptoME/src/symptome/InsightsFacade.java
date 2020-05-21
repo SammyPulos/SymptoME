@@ -6,10 +6,12 @@ public class InsightsFacade {
     
     // insights concrete queryDB classes
     InsightsSameSympsQueryDB insightsSameSympsQueryDB;
+    InsightsSameZipQueryDB insightsSameZipQueryDB;
     
     public InsightsFacade() throws SQLException {
         // TODO
         this.insightsSameSympsQueryDB = new InsightsSameSympsQueryDB();
+        this.insightsSameZipQueryDB = new InsightsSameZipQueryDB();
     }
     
     public double getPercentSameSymptoms() throws SQLException {
@@ -24,13 +26,13 @@ public class InsightsFacade {
     public double getPercentSameSymptomsNegative() throws SQLException {
         return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTestedNegative());
     }
-    public double getPercentSameLocationTested() {
-        return 4;
+    public double getPercentSameLocationTested() throws SQLException {
+        return(insightsSameZipQueryDB.calcPercentSameLocationTested());
     }
-    public double getPercentSameLocationPositive() {
-        return 5;
+    public double getPercentSameLocationPositive() throws SQLException {
+        return(insightsSameZipQueryDB.calcPercentSameLocationPositive());
     }
-    public double getPercentSameLocationNegative() {
-        return 6;
+    public double getPercentSameLocationNegative() throws SQLException {
+        return(insightsSameZipQueryDB.calcPercentSameLocationNegative());
     }
 }

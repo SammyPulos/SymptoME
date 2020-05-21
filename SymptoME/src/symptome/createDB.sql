@@ -35,4 +35,6 @@
 --  INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
 --                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Deb', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
 
-SELECT DISTINCT username FROM Reports WHERE beenTested = 1 AND (username = 'Zac' OR username = 'Gab')
+
+
+SELECT DISTINCT username FROM Reports WHERE beenTested = 1 AND (username = 'Zac' OR username = 'Zan' OR username = 'Gab' OR username = 'John' OR username = 'izzy' OR username = 'K' OR username = 'BB' OR username = 'h' OR username = 'Jan' OR username = 'Liz')
