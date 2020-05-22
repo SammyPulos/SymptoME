@@ -6,9 +6,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,7 +35,13 @@ public class InsightsScreen implements Screen{
     private JPanel screenPanel;
     
     private JLabel notificationLabel;
-    
+    private JLabel percentSame;
+    private JLabel percentSameSymptomsTested;
+    private JLabel percentSameSymptomsResults;
+    private JLabel percentSameLocationTested;
+    private JLabel percentSameLocationResults;
+    private ChartPanel feelingChartPanel;
+                
     public InsightsScreen() throws SQLException {
         screenPanel = setupScreenPanel();
     }
@@ -41,27 +53,119 @@ public class InsightsScreen implements Screen{
     
     private JPanel setupScreenPanel() throws SQLException {
         screenPanel = new JPanel();        
-        screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
+        screenPanel.setBackground(Color.white);
+        screenPanel.setLayout(null);                         
         
-        JLabel titleLabel = new JLabel("Insights:");
+        notificationLabel = new JLabel("Please submit your daily survey in order to receive the latest insights.");
+        notificationLabel.setForeground(Color.red);
+        notificationLabel.setFont(new Font("SegoeUI", Font.BOLD, 16));
+        notificationLabel.setBounds(460, 145, 600, 20);
+        screenPanel.add(notificationLabel);
+        
+        percentSame = new JLabel("");
+        percentSame.setFont(new Font("SegoeUI", Font.PLAIN, 20));
+        percentSame.setBounds(250, 185, 1000, 25);
+        screenPanel.add(percentSame);
+        
+        percentSameSymptomsTested = new JLabel("");
+        percentSameSymptomsTested.setFont(new Font("SegoeUI", Font.PLAIN, 20));
+        percentSameSymptomsTested.setBounds(250, 225, 1000, 25);
+        screenPanel.add(percentSameSymptomsTested);
+        
+        percentSameSymptomsResults = new JLabel("");
+        percentSameSymptomsResults.setFont(new Font("SegoeUI", Font.PLAIN, 20));
+        percentSameSymptomsResults.setBounds(250, 255, 1000, 25);        
+        screenPanel.add(percentSameSymptomsResults);
+        
+        percentSameLocationTested = new JLabel("");
+        percentSameLocationTested.setFont(new Font("SegoeUI", Font.PLAIN, 20));
+        percentSameLocationTested.setBounds(250, 295, 1000, 25);     
+        screenPanel.add(percentSameLocationTested);
+        
+        percentSameLocationResults = new JLabel("");
+        percentSameLocationResults.setFont(new Font("SegoeUI", Font.PLAIN, 20));
+        percentSameLocationResults.setBounds(250, 325, 1000, 25);  
+        screenPanel.add(percentSameLocationResults);
+        
+        ChartPanel feelingChartPanel = setupChartPanel();
+        feelingChartPanel.setBounds(250, 375, 950, 300);
+        screenPanel.add(feelingChartPanel);
+        
+        JLabel background;
+        try { 
+            background = new JLabel(new ImageIcon(ImageIO.read(new File("SymptoMeInsights.png"))));
+            background.setBounds(0, 0, 1280, 720);
+            screenPanel.add(background); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load background for insights screen"); 
+        }
+        
+        JButton homeButton;
+        try { 
+            homeButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarHomeButton.png"))));
+            homeButton.setBounds(6, 6, 171, 124);
+            homeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleHomeButtonPressed(); }
+            });
+            screenPanel.add(homeButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load home button for insights screen"); 
+        }
 
-        JButton homeButton = new JButton("Home");
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleHomeButtonPressed(); }
-        });        
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
-        });
+        JButton profileButton;
+        try { 
+            profileButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarProfileButton.png"))));
+            profileButton.setBounds(6, 138, 171, 119);
+            profileButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleProfileButtonPressed(); }
+            });
+            screenPanel.add(profileButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load profile button for insights screen"); 
+        }
         
-        screenPanel.add(titleLabel);
+        JButton surveyButton;
+        try { 
+            surveyButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarSurveyButton.png"))));
+            surveyButton.setBounds(6, 265, 171, 115);
+            surveyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleSurveyButtonPressed(); }
+            });
+            screenPanel.add(surveyButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load survey button for insights screen"); 
+        }        
+        
+        JButton historyButton;
+        try { 
+            historyButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarHistoryButton.png"))));
+            historyButton.setBounds(6, 505, 171, 107);
+            historyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleHistoryButtonPressed(); }
+            });
+            screenPanel.add(historyButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load history button for insights screen"); 
+        }
+        
+        JButton logoutButton;
+        try { 
+            logoutButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarLogoutButton.png"))));
+            logoutButton.setBounds(6, 620, 171, 59);
+            logoutButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
+            });
+            screenPanel.add(logoutButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load logout button for insights screen"); 
+        }
         
         SetupInsights();
-        
-        screenPanel.add(homeButton);
-        screenPanel.add(logoutButton);
         
         return screenPanel;
     }
@@ -69,35 +173,24 @@ public class InsightsScreen implements Screen{
     private Screen SetupInsights() throws SQLException {
         if (screenPanel == null) { return this; }
         
-        InsightsFacade insightsFacade = new InsightsFacade(); // TODO: need to actually get/generate this
+        InsightsFacade insightsFacade = new InsightsFacade();
         
-        if (insightsFacade.getPercentSameSymptoms() < 0){ // check that user has taken daily survey
-            notificationLabel = new JLabel("Please submit your daily survey in order to receive the latest insights.");
-            notificationLabel.setForeground(Color.red);
-            screenPanel.add(notificationLabel);
+        if (insightsFacade.getPercentSameSymptoms() < 0) // check that user has taken daily survey
+            notificationLabel.setText("Please submit your daily survey in order to receive the latest insights.");
+        else {
+            notificationLabel.setText("");
+            percentSame.setText("• Overall " + insightsFacade.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point");
+            percentSameSymptomsTested.setText("• Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSameSymptomsTested() + "% have been tested for COVID-19");
+            percentSameSymptomsResults.setText("    • Out of these " + insightsFacade.getPercentSameSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSameSymptomsNegative() + "% have tested negative");
+            percentSameLocationTested.setText("• In your area " + insightsFacade.getPercentSameLocationTested() + "% of users have been tested for COVID-19");
+            percentSameLocationResults.setText("    • Out of these " + insightsFacade.getPercentSameLocationPositive() + "% have tested positive and " + insightsFacade.getPercentSameLocationNegative() + "% have tested negative");        
         }
-        JLabel percentSame = new JLabel("<html><br/>Overall " + insightsFacade.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point</html>");
-        JLabel percentSameSymptomsTested = new JLabel("<html><br/>Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSameSymptomsTested() + "% have been tested for COVID-19</html>");
-        JLabel percentSameSymptomsResults = new JLabel("    Out of these " + insightsFacade.getPercentSameSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSameSymptomsNegative() + "% have tested negative");
-        JLabel percentSameLocationTested = new JLabel("<html><br/>In your area " + insightsFacade.getPercentSameLocationTested() + "% of users have been tested for COVID-19</html>");
-        JLabel percentSameLocationResults = new JLabel("    Out of these " + insightsFacade.getPercentSameLocationPositive() + "% have tested positive and " + insightsFacade.getPercentSameLocationNegative() + "% have tested negative");
-        JLabel spacingLabel = new JLabel("<html><br/></html>");
-        
-        ChartPanel feelingChartPanel = setupChartPanel();
-        
-        screenPanel.add(percentSame);
-        screenPanel.add(percentSameSymptomsTested);
-        screenPanel.add(percentSameSymptomsResults);
-        screenPanel.add(percentSameLocationTested);
-        screenPanel.add(percentSameLocationResults);
-        screenPanel.add(spacingLabel);
-        screenPanel.add(feelingChartPanel);
         
         return this;
     }
     
     private ChartPanel setupChartPanel() {
-        XYSeries series = new XYSeries("May");
+        XYSeries series = new XYSeries(new SimpleDateFormat("MMMM").format(new Date()));
         for (int i = 0; i < 31; ++i) {
             int randomNum = ThreadLocalRandom.current().nextInt(0, 10 + 1);
             series.add(i+1, randomNum);
@@ -135,11 +228,11 @@ public class InsightsScreen implements Screen{
 
         plot.setDomainGridlinesVisible(true);
         plot.setDomainGridlinePaint(Color.BLACK);
-
+        
         chart.getLegend().setFrame(BlockBorder.NONE);
 
         chart.setTitle(new TextTitle("Feeling Trend",
-                new Font("Serif", java.awt.Font.BOLD, 18)
+                new Font("SegoeUI", Font.PLAIN, 20)
             )
         );
 
@@ -156,8 +249,19 @@ public class InsightsScreen implements Screen{
         return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
     }
     
+    private Screen handleProfileButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.PROFILE));
+    }   
+    
+    private Screen handleSurveyButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.SURVEY));
+    }    
+    
+    private Screen handleHistoryButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.HISTORY));
+    }   
+    
     private Screen handleLogoutButtonPressed() {
         return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
     }    
-    
 }

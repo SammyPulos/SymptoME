@@ -1,5 +1,6 @@
 package symptome;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +20,8 @@ public class ApplicationWindow {
     private ApplicationWindow() {
         applicationFrame = new JFrame();
         applicationFrame.setSize(WIDTH, HEIGHT);
+        applicationFrame.getContentPane().setMinimumSize(new Dimension(WIDTH, HEIGHT));
+        applicationFrame.getContentPane().setMaximumSize(new Dimension(WIDTH, HEIGHT));
         applicationFrame.setLayout(new FlowLayout());
         applicationFrame.setVisible(true);
         applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +34,7 @@ public class ApplicationWindow {
             Screen screen = ScreenFactory.Instance().getScreenOfType(desiredScreen);
             if (currentPanel != null ) { applicationFrame.remove(currentPanel); }
             currentPanel = screen.getPanel();
-            applicationFrame.getContentPane().add(currentPanel);
+            applicationFrame.setContentPane(currentPanel);
             applicationFrame.invalidate();
             applicationFrame.revalidate();
             applicationFrame.repaint();

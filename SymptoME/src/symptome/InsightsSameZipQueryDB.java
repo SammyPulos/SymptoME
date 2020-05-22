@@ -16,6 +16,7 @@ public class InsightsSameZipQueryDB extends QueryDB{
        ArrayList<String[]> nearbyUsers = retrieveNearbyUsers();
        ArrayList<String[]> nearbyTestedUsers = retrieveNearbyUsersWhoTested();
        
+       if (nearbyUsers.isEmpty()) { return 0; } // TODO: added pls check
        return (100 * nearbyTestedUsers.size() / nearbyUsers.size());
     }
     // calculates percentage of users who've tested positive in same zipCode
@@ -25,9 +26,10 @@ public class InsightsSameZipQueryDB extends QueryDB{
        
        if (nearbyTestedUsers == null || nearbyPositiveUsers == null)
            return 0;
+       else if (nearbyTestedUsers.isEmpty()) // TODO: added pls check
+           return 0;
        else
            return (100 * nearbyPositiveUsers.size() / nearbyTestedUsers.size());
-       
     }
     // calculates percentage of users who've tested negative in same zipCode
     public double calcPercentSameLocationNegative() throws SQLException{
@@ -47,6 +49,7 @@ public class InsightsSameZipQueryDB extends QueryDB{
         }
         int negUserCount = overlappingUsers.size() - nearbyPositiveUsers.size();
 
+        if (nearbyTestedUsers == null || nearbyTestedUsers.isEmpty()) { return 0; } // TODO: added pls check
         return (100 * negUserCount / nearbyTestedUsers.size());  
     }
   

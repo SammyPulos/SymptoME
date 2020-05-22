@@ -2,16 +2,22 @@ package symptome;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -56,12 +62,15 @@ public class HistoryScreen implements Screen{
     
     private JPanel setupScreenPanel() {
         screenPanel = new JPanel();        
-        screenPanel.setLayout(new BoxLayout(screenPanel, BoxLayout.Y_AXIS));                
-        
-        JLabel titleLabel = new JLabel("History:");
-        
+        screenPanel.setBackground(Color.white);
+        screenPanel.setLayout(null); 
+
         dateChooser = new JDateChooser(new Date());
-        
+        dateChooser.setBounds(555, 195, 320, 36);
+        dateChooser.getJCalendar().setPreferredSize(new Dimension(320, 240));
+        dateChooser.setFont(new Font("SegoeUI", Font.PLAIN, 24));
+        dateChooser.getJCalendar().setFont(new Font("SegoeUI", Font.PLAIN, 12));
+        dateChooser.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         dateChooser.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -70,97 +79,255 @@ public class HistoryScreen implements Screen{
                 }
             }
         });
+        screenPanel.add(dateChooser);
         
-        JButton forwardButton = new JButton("Next day");
-        forwardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleForwardButtonPressed(); }
-        });
-        JButton backwardButton = new JButton("Previous day");
-        backwardButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleBackwardButtonPressed(); }
-        });
+        notificationLabel = new JLabel("");
+        notificationLabel.setForeground(Color.red);
+        notificationLabel.setFont(new Font("SegoeUI", Font.BOLD, 16));
+        notificationLabel.setBounds(555, 235, 340, 39);
+        screenPanel.add(notificationLabel);
         
-        (notificationLabel = new JLabel("")).setForeground(Color.red);
+        JLabel feelingLabel = new JLabel("• On a scale of 0-10 how good do you feel?");
+        feelingLabel.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        feelingLabel.setBounds(460, 280, 360, 32);
+        screenPanel.add(feelingLabel);
         
-        JLabel feelingLabel = new JLabel("On a scale of 0-10 how good did you feel?");
         feelingSlider = new JSlider(0,10);
-        feelingSlider.setEnabled(false);
+        feelingSlider.setBackground(Color.white);
+        feelingSlider.setFont(new Font("SegoeUI", Font.PLAIN, 12));
+        feelingSlider.setBounds(460, 310, 500, 50);
         feelingSlider.setMajorTickSpacing(1);
         feelingSlider.setPaintLabels(true);
         feelingSlider.setPaintTicks(true);
         feelingSlider.setSnapToTicks(true);
+        feelingSlider.setEnabled(false);
+        feelingSlider.setValue(0);
+        screenPanel.add(feelingSlider);
         
-        JLabel symptomLabel = new JLabel("Experienced Symptoms:");
-        (coughBox = new JCheckBox("Cough")).setEnabled(false);
-        (diffBreathingBox = new JCheckBox("Difficulity Breathing")).setEnabled(false); 
-        (feverBox = new JCheckBox("Fever")).setEnabled(false); 
-        (painBox = new JCheckBox("Muscle pain")).setEnabled(false); 
-        (soreThroatBox = new JCheckBox("Sore throat")).setEnabled(false); 
-        (lossBox = new JCheckBox("Loss of taste or smell")).setEnabled(false); 
+        JLabel symptomLabel = new JLabel("• Please check the symptoms you are experiencing:");
+        symptomLabel.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        symptomLabel.setBounds(460, 365, 500, 32);
+        screenPanel.add(symptomLabel);
         
-        JLabel outsideLabel = new JLabel("Did you go outside where there were other people today?");
-        (outsideRBY = new JRadioButton("Yes")).setEnabled(false);
-        (outsideRBN = new JRadioButton("No")).setEnabled(false);
+        coughBox = new JCheckBox("Cough");
+        coughBox.setBackground(Color.white);
+        coughBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        coughBox.setBounds(480, 395, 200, 20);
+        coughBox.setEnabled(false);
+        screenPanel.add(coughBox);
+        
+        diffBreathingBox = new JCheckBox("Difficulty Breathing");
+        diffBreathingBox.setBackground(Color.white);
+        diffBreathingBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        diffBreathingBox.setBounds(680, 395, 200, 20);
+        diffBreathingBox.setEnabled(false);
+        screenPanel.add(diffBreathingBox);
+         
+        feverBox = new JCheckBox("Fever"); 
+        feverBox.setBackground(Color.white);
+        feverBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        feverBox.setBounds(480, 415, 200, 20);
+        feverBox.setEnabled(false);
+        screenPanel.add(feverBox);
+        
+        painBox = new JCheckBox("Muscle pain"); 
+        painBox.setBackground(Color.white);
+        painBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        painBox.setBounds(680, 415, 200, 20);
+        painBox.setEnabled(false);
+        screenPanel.add(painBox);
+        
+        soreThroatBox = new JCheckBox("Sore throat"); 
+        soreThroatBox.setBackground(Color.white);
+        soreThroatBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        soreThroatBox.setBounds(480, 435, 200, 20);
+        soreThroatBox.setEnabled(false);
+        screenPanel.add(soreThroatBox);
+        
+        lossBox = new JCheckBox("Loss of taste or smell"); 
+        lossBox.setBackground(Color.white);
+        lossBox.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        lossBox.setBounds(680, 435, 200, 20);
+        lossBox.setEnabled(false);
+        screenPanel.add(lossBox);
+        
+        JLabel outsideLabel = new JLabel("• Did you go outside where there were other people today?");
+        outsideLabel.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        outsideLabel.setBounds(460, 470, 500, 32);
+        screenPanel.add(outsideLabel);
+        
+        outsideRBY = new JRadioButton("Yes");
+        outsideRBY.setBackground(Color.white);
+        outsideRBY.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        outsideRBY.setBounds(480, 500, 200, 20);
+        outsideRBY.setEnabled(false);
+        screenPanel.add(outsideRBY);
+        
+        outsideRBN = new JRadioButton("No");
+        outsideRBN.setBackground(Color.white);
+        outsideRBN.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        outsideRBN.setBounds(680, 500, 200, 20);
+        outsideRBN.setEnabled(false);
+        screenPanel.add(outsideRBN);
+        
         outsideBG = new ButtonGroup();
         outsideBG.add(outsideRBY);
         outsideBG.add(outsideRBN);
         
-        JLabel testedLabel = new JLabel("Were you tested for COVID-19?");
-        (testedRBY = new JRadioButton("Yes")).setEnabled(false);
-        (testedRBN = new JRadioButton("No")).setEnabled(false);
+        JLabel testedLabel = new JLabel("• Were you tested for COVID-19 today?");
+        testedLabel.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        testedLabel.setBounds(460, 535, 500, 32);
+        screenPanel.add(testedLabel);
+        
+        testedRBY = new JRadioButton("Yes");
+        testedRBY.setBackground(Color.white);
+        testedRBY.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        testedRBY.setBounds(480, 565, 200, 20);
+        testedRBY.setEnabled(false);
+        screenPanel.add(testedRBY);
+        
+        testedRBN = new JRadioButton("No");
+        testedRBN.setBackground(Color.white);
+        testedRBN.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        testedRBN.setBounds(680, 565, 200, 20);
+        testedRBN.setEnabled(false);
+        screenPanel.add(testedRBN);
+        
         testedBG = new ButtonGroup();
         testedBG.add(testedRBY);
         testedBG.add(testedRBN);
         
-        JLabel resultLabel = new JLabel("If you recieved your test results what were they?");
-        (resultRBY = new JRadioButton("Positive")).setEnabled(false);
-        (resultRBN = new JRadioButton("Negative")).setEnabled(false);
-        (resultRBNA = new JRadioButton("No results")).setEnabled(false);
+        JLabel resultLabel = new JLabel("• If you recieved your test results today what were they?");
+        resultLabel.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        resultLabel.setBounds(460, 600, 500, 32);
+        screenPanel.add(resultLabel);
+        
+        resultRBY = new JRadioButton("Positive");
+        resultRBY.setBackground(Color.white);
+        resultRBY.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        resultRBY.setBounds(480, 630, 100, 20);
+        resultRBY.setEnabled(false);
+        screenPanel.add(resultRBY);
+        
+        resultRBN = new JRadioButton("Negative");
+        resultRBN.setBackground(Color.white);
+        resultRBN.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        resultRBN.setBounds(680, 630, 100, 20);
+        resultRBN.setEnabled(false);
+        screenPanel.add(resultRBN);
+        
+        resultRBNA = new JRadioButton("No results");
+        resultRBNA.setBackground(Color.white);
+        resultRBNA.setFont(new Font("SegoeUI", Font.PLAIN, 16));
+        resultRBNA.setBounds(880, 630, 100, 20);
+        resultRBNA.setEnabled(false);
+        screenPanel.add(resultRBNA);
+        
         resultBG = new ButtonGroup();
         resultBG.add(resultRBY);
         resultBG.add(resultRBN);
         resultBG.add(resultRBNA);
+        
+        JLabel background;
+        try { 
+            background = new JLabel(new ImageIcon(ImageIO.read(new File("SymptoMeHistory.png"))));
+            background.setBounds(0, 0, 1280, 720);
+            screenPanel.add(background); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load background for history screen"); 
+        }
+        
+        JButton forwardButton;
+        try { 
+            forwardButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeHistoryForwardButton.png"))));
+            forwardButton.setBounds(929, 186, 43, 43);
+            forwardButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleForwardButtonPressed(); }
+            });
+            screenPanel.add(forwardButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load forward button for history screen"); 
+        }
+        
+        JButton backwardButton;
+        try { 
+            backwardButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeHistoryBackwardButton.png"))));
+            backwardButton.setBounds(448, 186, 43, 43);
+            backwardButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleBackwardButtonPressed(); }
+            });
+            screenPanel.add(backwardButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load backward button for history screen"); 
+        }
+        
+        JButton homeButton;
+        try { 
+            homeButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarHomeButton.png"))));
+            homeButton.setBounds(6, 6, 171, 124);
+            homeButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleHomeButtonPressed(); }
+            });
+            screenPanel.add(homeButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load home button for history screen"); 
+        }
 
-        JButton homeButton = new JButton("Home");
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleHomeButtonPressed(); }
-        }); 
-        JButton logoutButton = new JButton("Logout");
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
-        });
+        JButton profileButton;
+        try { 
+            profileButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarProfileButton.png"))));
+            profileButton.setBounds(6, 138, 171, 119);
+            profileButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleProfileButtonPressed(); }
+            });
+            screenPanel.add(profileButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load profile button for history screen"); 
+        }
+
+        JButton surveyButton;
+        try { 
+            surveyButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarSurveyButton.png"))));
+            surveyButton.setBounds(6, 265, 171, 115);
+            surveyButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleSurveyButtonPressed(); }
+            });
+            screenPanel.add(surveyButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load survey button for history screen"); 
+        }
         
-        screenPanel.add(titleLabel);
-        screenPanel.add(dateChooser);
-        screenPanel.add(forwardButton);
-        screenPanel.add(backwardButton);
-        screenPanel.add(notificationLabel);
-        screenPanel.add(feelingLabel);
-        screenPanel.add(feelingSlider);
-        screenPanel.add(symptomLabel);
-        screenPanel.add(coughBox);
-        screenPanel.add(diffBreathingBox);
-        screenPanel.add(feverBox);
-        screenPanel.add(painBox);
-        screenPanel.add(soreThroatBox);
-        screenPanel.add(lossBox);
-        screenPanel.add(outsideLabel);
-        screenPanel.add(outsideRBY);
-        screenPanel.add(outsideRBN);
-        screenPanel.add(testedLabel);
-        screenPanel.add(testedRBY);
-        screenPanel.add(testedRBN);
-        screenPanel.add(resultLabel);
-        screenPanel.add(resultRBY);
-        screenPanel.add(resultRBN);
-        screenPanel.add(resultRBNA);
-        screenPanel.add(homeButton);
-        screenPanel.add(logoutButton);
+        JButton insightsButton;
+        try { 
+            insightsButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarInsightsButton.png"))));
+            insightsButton.setBounds(6, 388, 171, 109);
+            insightsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleInsightsButtonPressed(); }
+            });
+            screenPanel.add(insightsButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load insights button for history screen"); 
+        }
         
+        JButton logoutButton;
+        try { 
+            logoutButton = new JButton(new ImageIcon(ImageIO.read(new File("SymptoMeSidebarLogoutButton.png"))));
+            logoutButton.setBounds(6, 620, 171, 59);
+            logoutButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) { handleLogoutButtonPressed(); }
+            });
+            screenPanel.add(logoutButton); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load logout button for history screen"); 
+        }
+
         updateSurveyFields();
         
         return screenPanel;
@@ -222,7 +389,7 @@ public class HistoryScreen implements Screen{
         feverBox.setSelected(false); 
         painBox.setSelected(false); 
         soreThroatBox.setSelected(false); 
-        lossBox.setSelected(false); 
+        lossBox.setSelected(false);
         outsideBG.clearSelection();
         testedBG.clearSelection();
         resultBG.clearSelection();
@@ -230,6 +397,18 @@ public class HistoryScreen implements Screen{
     
     private Screen handleHomeButtonPressed() {
         return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+    }
+    
+    private Screen handleProfileButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.PROFILE));
+    }
+    
+    private Screen handleSurveyButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.SURVEY));
+    }   
+    
+    private Screen handleInsightsButtonPressed() {
+        return (ApplicationWindow.Instance().setScreen(ScreenType.INSIGHTS));
     }
     
     private Screen handleLogoutButtonPressed() {
