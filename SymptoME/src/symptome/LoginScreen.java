@@ -40,6 +40,18 @@ public class LoginScreen implements Screen{
         screenPanel.setBackground(Color.white);
         screenPanel.setLayout(null); 
         
+        usernameField = new JTextField();
+        usernameField.setBounds(675, 340, 320, 36);
+        usernameField.setFont(new Font("SegoeUI", Font.PLAIN, 24));
+        usernameField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        screenPanel.add(usernameField);
+        
+        passwordField = new JPasswordField();
+        passwordField.setBounds(675, 433, 320, 36);
+        passwordField.setFont(new Font("SegoeUI", Font.PLAIN, 24));
+        passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+        screenPanel.add(passwordField);
+        
         notificationLabel = new JLabel("");
         notificationLabel.setForeground(Color.red);
         notificationLabel.setFont(new Font("SegoeUI", Font.BOLD, 16));
@@ -54,18 +66,6 @@ public class LoginScreen implements Screen{
         } catch (IOException ex) { 
             System.out.println("Cannot load background for login screen"); 
         }
-        
-        usernameField = new JTextField();
-        usernameField.setBounds(675, 340, 320, 36);
-        usernameField.setFont(new Font("SegoeUI", Font.PLAIN, 24));
-        usernameField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        screenPanel.add(usernameField);
-        
-        passwordField = new JPasswordField();
-        passwordField.setBounds(675, 433, 320, 36);
-        passwordField.setFont(new Font("SegoeUI", Font.PLAIN, 24));
-        passwordField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-        screenPanel.add(passwordField);
         
         JButton loginButton;
         try { 

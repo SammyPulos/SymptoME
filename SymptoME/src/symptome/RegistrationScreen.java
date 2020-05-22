@@ -44,21 +44,6 @@ public class RegistrationScreen implements Screen {
         screenPanel.setBackground(Color.white);
         screenPanel.setLayout(null); 
         
-        notificationLabel = new JLabel("");
-        notificationLabel.setForeground(Color.red);
-        notificationLabel.setFont(new Font("SegoeUI", Font.BOLD, 16));
-        notificationLabel.setBounds(660, 556, 300, 39);
-        screenPanel.add(notificationLabel);
-        
-        JLabel background;
-        try { 
-            background = new JLabel(new ImageIcon(ImageIO.read(new File("SymptoMeSignup.png"))));
-            background.setBounds(0, 0, 1280, 720);
-            screenPanel.add(background); 
-        } catch (IOException ex) { 
-            System.out.println("Cannot load background for signup screen"); 
-        }
-        
         usernameField = new JTextField();
         usernameField.setBounds(675, 228, 320, 36);
         usernameField.setFont(new Font("SegoeUI", Font.PLAIN, 24));
@@ -84,6 +69,21 @@ public class RegistrationScreen implements Screen {
         dobChooser.getJCalendar().setFont(new Font("SegoeUI", Font.PLAIN, 12));
         dobChooser.setBorder(javax.swing.BorderFactory.createEmptyBorder());
         screenPanel.add(dobChooser);
+        
+        notificationLabel = new JLabel("");
+        notificationLabel.setForeground(Color.red);
+        notificationLabel.setFont(new Font("SegoeUI", Font.BOLD, 16));
+        notificationLabel.setBounds(660, 556, 300, 39);
+        screenPanel.add(notificationLabel);
+        
+        JLabel background;
+        try { 
+            background = new JLabel(new ImageIcon(ImageIO.read(new File("SymptoMeSignup.png"))));
+            background.setBounds(0, 0, 1280, 720);
+            screenPanel.add(background); 
+        } catch (IOException ex) { 
+            System.out.println("Cannot load background for signup screen"); 
+        }
         
         JButton confirmButton;
         try {
