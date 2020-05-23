@@ -32,9 +32,9 @@
 -- );
 
 --create index ReportsIndex on Reports(reportDate);
+
 --  INSERT INTO Reports (reportDate, username, feelingRating, cough, diffBreathing, fever, musclePain, soreThroat, lostTasteSmell, goneOut, beenTested, testResult)
---                 VALUES (TO_DATE('2020-05-13','YYYY-MM-DD'), 'Deb', 2, 0, 1, 1, 1, 1, 0, 1, 1, 0);
+--                 VALUES (TO_DATE('2020-05-05','YYYY-MM-DD'), 'Deb', 10, 0, 1, 1, 1, 1, 0, 1, 1, 0);
 
 
-
-SELECT DISTINCT username FROM Reports WHERE beenTested = 1 AND (username = 'Zac' OR username = 'Zan' OR username = 'Gab' OR username = 'John' OR username = 'izzy' OR username = 'K' OR username = 'BB' OR username = 'h' OR username = 'Jan' OR username = 'Liz')
+--SELECT reportDate, feelingRating FROM Reports WHERE username = 'Deb' AND reportDate <= TO_DATE('2020-05-23','YYYY-MM-DD') AND reportDate >= TO_DATE('2020-05-01','YYYY-MM-DD')

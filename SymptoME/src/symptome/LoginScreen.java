@@ -36,6 +36,7 @@ public class LoginScreen implements Screen{
     }
     
     private JPanel setupScreenPanel() {
+        
         screenPanel = new JPanel();        
         screenPanel.setBackground(Color.white);
         screenPanel.setLayout(null); 

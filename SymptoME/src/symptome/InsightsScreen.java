@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.ImageIO;
@@ -41,8 +42,10 @@ public class InsightsScreen implements Screen{
     private JLabel percentSameLocationTested;
     private JLabel percentSameLocationResults;
     private ChartPanel feelingChartPanel;
+    InsightsFacade insightsFacade = new InsightsFacade();
                 
     public InsightsScreen() throws SQLException {
+        this.insightsFacade = new InsightsFacade();
         screenPanel = setupScreenPanel();
     }
     
@@ -173,8 +176,6 @@ public class InsightsScreen implements Screen{
     private Screen SetupInsights() throws SQLException {
         if (screenPanel == null) { return this; }
         
-        InsightsFacade insightsFacade = new InsightsFacade();
-        
         if (insightsFacade.getPercentSameSymptoms() < 0) // check that user has taken daily survey
             notificationLabel.setText("Please submit your daily survey in order to receive the latest insights.");
         else {
@@ -191,9 +192,12 @@ public class InsightsScreen implements Screen{
     
     private ChartPanel setupChartPanel() {
         XYSeries series = new XYSeries(new SimpleDateFormat("MMMM").format(new Date()));
-        for (int i = 0; i < 31; ++i) {
-            int randomNum = ThreadLocalRandom.current().nextInt(0, 10 + 1);
-            series.add(i+1, randomNum);
+        ArrayList<String[]> chartTuples = insightsFacade.getChartPoints();
+        for (int i = 1; i < 31; ++i) {
+            for (String[] tuple: chartTuples){
+                if (Integer.parseInt(tuple[0].substring(8,10)) == i)
+                    series.add(i, Integer.parseInt(tuple[1]));
+            }
         }
 
         XYSeriesCollection dataset = new XYSeriesCollection();
