@@ -12,9 +12,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -22,7 +20,6 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.block.BlockBorder;
 import org.jfree.chart.plot.PlotOrientation;
@@ -32,8 +29,7 @@ import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-public class InsightsScreen implements Screen{
-    private JPanel screenPanel;
+public class InsightsScreen extends Screen{
     
     private JLabel notificationLabel;
     private JLabel percentSame;
@@ -47,11 +43,6 @@ public class InsightsScreen implements Screen{
     public InsightsScreen() throws SQLException {
         this.insightsFacade = new InsightsFacade();
         screenPanel = setupScreenPanel();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() throws SQLException {
@@ -176,15 +167,15 @@ public class InsightsScreen implements Screen{
     private Screen SetupInsights() throws SQLException {
         if (screenPanel == null) { return this; }
         
-        if (insightsFacade.getPercentSameSymptoms() < 0) // check that user has taken daily survey
+        if (insightsFacade.getPercentSimilarSymptoms() < 0) // check that user has taken daily survey
             notificationLabel.setText("Please submit your daily survey in order to receive the latest insights.");
         else {
             notificationLabel.setText("");
-            percentSame.setText("• Overall " + insightsFacade.getPercentSameSymptoms() + "% users have recorded the same symptoms as yours at some point");
-            percentSameSymptomsTested.setText("• Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSameSymptomsTested() + "% have been tested for COVID-19");
-            percentSameSymptomsResults.setText("    • Out of these " + insightsFacade.getPercentSameSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSameSymptomsNegative() + "% have tested negative");
-            percentSameLocationTested.setText("• In your area " + insightsFacade.getPercentSameLocationTested() + "% of users have been tested for COVID-19");
-            percentSameLocationResults.setText("    • Out of these " + insightsFacade.getPercentSameLocationPositive() + "% have tested positive and " + insightsFacade.getPercentSameLocationNegative() + "% have tested negative");        
+            percentSame.setText("• Overall " + insightsFacade.getPercentSimilarSymptoms() + "% users have recorded the same symptoms as yours at some point");
+            percentSameSymptomsTested.setText("• Out of people with symptoms matching your most recent report " + insightsFacade.getPercentSimilarSymptomsTested() + "% have been tested for COVID-19");
+            percentSameSymptomsResults.setText("    • Out of these " + insightsFacade.getPercentSimilarSymptomsPositive() + "% have tested positive and " + insightsFacade.getPercentSimilarSymptomsNegative() + "% have tested negative");
+            percentSameLocationTested.setText("• In your area " + insightsFacade.getPercentSimilarLocationTested() + "% of users have been tested for COVID-19");
+            percentSameLocationResults.setText("    • Out of these " + insightsFacade.getPercentSimilarLocationPositive() + "% have tested positive and " + insightsFacade.getPercentSimilarLocationNegative() + "% have tested negative");        
         }
         
         return this;
@@ -193,10 +184,12 @@ public class InsightsScreen implements Screen{
     private ChartPanel setupChartPanel() {
         XYSeries series = new XYSeries(new SimpleDateFormat("MMMM").format(new Date()));
         ArrayList<String[]> chartTuples = insightsFacade.getChartPoints();
-        for (int i = 1; i < 31; ++i) {
-            for (String[] tuple: chartTuples){
-                if (Integer.parseInt(tuple[0].substring(8,10)) == i)
-                    series.add(i, Integer.parseInt(tuple[1]));
+        if (chartTuples != null) {
+            for (int i = 1; i < 31; ++i) {
+                for (String[] tuple: chartTuples){
+                    if (Integer.parseInt(tuple[0].substring(8,10)) == i)
+                        series.add(i, Integer.parseInt(tuple[1]));
+                }
             }
         }
 
@@ -249,23 +242,19 @@ public class InsightsScreen implements Screen{
         return chartPanel;
     }
     
-    private Screen handleHomeButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+    private void handleHomeButtonPressed() {
+        this.toHomeScreen();
     }
-    
-    private Screen handleProfileButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.PROFILE));
-    }   
-    
-    private Screen handleSurveyButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.SURVEY));
-    }    
-    
-    private Screen handleHistoryButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HISTORY));
-    }   
-    
-    private Screen handleLogoutButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+    private void handleProfileButtonPressed() {
+        this.toProfileScreen();
+    }
+    private void handleSurveyButtonPressed() {
+        this.toSurveyScreen();
+    }
+    private void handleHistoryButtonPressed() {
+        this.toHistoryScreen();
+    }
+    private void handleLogoutButtonPressed() {
+        this.toLoginScreen();
     }    
 }

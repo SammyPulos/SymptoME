@@ -51,6 +51,7 @@ public final class ConnectDB {
         int numFields;
         try{
             ResultSet rs;
+            if (connection == null) { return null; } // added to avoid null ptr error
             try (Statement statement = connection.createStatement()) {
                 rs = statement.executeQuery(sqlQuery); 
                 numFields = rs.getMetaData().getColumnCount();
@@ -75,7 +76,6 @@ public final class ConnectDB {
     protected void runUpdateQuery(String sqlQuery){
         try (Statement statement = connection.createStatement()) {
             statement.executeQuery(sqlQuery); 
-        
         } catch(SQLException e){
             System.out.println("Error with SQL Query Execution." + e);
         }

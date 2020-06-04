@@ -5,34 +5,39 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class InsightsSameZipQueryDB extends QueryDB{
+public class InsightsSameZipQueryDB extends QueryDB implements InsightsLocationQueryDB {
     
     public InsightsSameZipQueryDB() throws SQLException{
         super();
     }
     
     // calculates percentage of users who've been tested in same zipCode
-    public double calcPercentSameLocationTested() throws SQLException{
+    @Override
+    public double calcPercentSimilarLocationTested() throws SQLException{
        ArrayList<String[]> nearbyUsers = retrieveNearbyUsers();
        ArrayList<String[]> nearbyTestedUsers = retrieveNearbyUsersWhoTested();
        
-       if (nearbyUsers.isEmpty()) { return 0; } // TODO: added pls check
+       if (nearbyUsers.isEmpty()) { return 0; }
        return (100 * nearbyTestedUsers.size() / nearbyUsers.size());
     }
+    
     // calculates percentage of users who've tested positive in same zipCode
-    public double calcPercentSameLocationPositive() throws SQLException{
+    @Override
+    public double calcPercentSimilarLocationPositive() throws SQLException{
        ArrayList<String[]> nearbyTestedUsers = retrieveNearbyUsersWhoTested();
        ArrayList<String[]> nearbyPositiveUsers = retrieveNearbyUsersWithTestResults(1);
        
        if (nearbyTestedUsers == null || nearbyPositiveUsers == null)
            return 0;
-       else if (nearbyTestedUsers.isEmpty()) // TODO: added pls check
+       else if (nearbyTestedUsers.isEmpty())
            return 0;
        else
            return (100 * nearbyPositiveUsers.size() / nearbyTestedUsers.size());
     }
+    
     // calculates percentage of users who've tested negative in same zipCode
-    public double calcPercentSameLocationNegative() throws SQLException{
+    @Override
+    public double calcPercentSimilarLocationNegative() throws SQLException{
         ArrayList<String[]> nearbyTestedUsers = retrieveNearbyUsersWhoTested();
         ArrayList<String[]> nearbyNegativeUsers = retrieveNearbyUsersWithTestResults(0);
         ArrayList<String[]> nearbyPositiveUsers = retrieveNearbyUsersWithTestResults(1);
@@ -49,11 +54,11 @@ public class InsightsSameZipQueryDB extends QueryDB{
         }
         int negUserCount = overlappingUsers.size() - nearbyPositiveUsers.size();
 
-        if (nearbyTestedUsers == null || nearbyTestedUsers.isEmpty()) { return 0; } // TODO: added pls check
+        if (nearbyTestedUsers == null || nearbyTestedUsers.isEmpty()) { return 0; } 
         return (100 * negUserCount / nearbyTestedUsers.size());  
     }
   
-    public ArrayList<String[]> retrieveNearbyUsers(){
+    private ArrayList<String[]> retrieveNearbyUsers(){
         String username = SessionData.instance().getUsername();
         
         // retrieve current user's zipCode
@@ -66,7 +71,7 @@ public class InsightsSameZipQueryDB extends QueryDB{
         return nearbyUsers;
     }
    
-    public ArrayList<String[]> retrieveNearbyUsersWhoTested() {
+    private ArrayList<String[]> retrieveNearbyUsersWhoTested() {
         ArrayList<String[]> nearbyUsers = retrieveNearbyUsers();
         if (nearbyUsers ==  null || nearbyUsers.isEmpty()){
             return null;
@@ -84,7 +89,7 @@ public class InsightsSameZipQueryDB extends QueryDB{
         return nearbyTestedUsers;
     }
     
-    public ArrayList<String[]> retrieveNearbyUsersWithTestResults(int result) {
+    private ArrayList<String[]> retrieveNearbyUsersWithTestResults(int result) {
         ArrayList<String[]> nearbyTestedUsers = retrieveNearbyUsersWhoTested();
         if (nearbyTestedUsers ==  null || nearbyTestedUsers.isEmpty()){
             return null;

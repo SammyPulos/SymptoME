@@ -5,8 +5,7 @@ import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-// TODO: make this a singleton
-public class ApplicationWindow {
+public class ApplicationWindow implements Observer {
     private static ApplicationWindow instance_ = new ApplicationWindow();
     public static ApplicationWindow Instance() {
         return instance_;
@@ -15,7 +14,7 @@ public class ApplicationWindow {
     private final Integer WIDTH = 1280;
     private final Integer HEIGHT = 720;
     private final JFrame applicationFrame;
-    private JPanel currentPanel;
+    private Screen currentScreen;
     
     private ApplicationWindow() {
         applicationFrame = new JFrame();
@@ -26,23 +25,46 @@ public class ApplicationWindow {
         applicationFrame.setVisible(true);
         applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         applicationFrame.setTitle("SymptoME");
+        
+        setScreen(ScreenType.LOGIN);
+        displayScreen();
     }
     
-    // TODO: are screens going to extend panels?
-    public Screen setScreen(ScreenType desiredScreen) {
+    public void update(Subject subject) {
+        stopDisplayScreen();
+        if (subject == null) { 
+            setScreen(ScreenType.NULL); 
+        } else {
+            setScreen((ScreenType)(subject.getState()));
+        }
+        displayScreen();
+    }
+    
+    private Screen setScreen(ScreenType desiredScreenType) {
+        Screen desiredScreen;
         try {
-            Screen screen = ScreenFactory.Instance().getScreenOfType(desiredScreen);
-            if (currentPanel != null ) { applicationFrame.remove(currentPanel); }
-            currentPanel = screen.getPanel();
-            applicationFrame.setContentPane(currentPanel);
-            applicationFrame.invalidate();
-            applicationFrame.revalidate();
-            applicationFrame.repaint();
-            return screen;
+            desiredScreen = ScreenFactory.Instance().getScreenOfType(desiredScreenType);
         } catch (Exception ex) {
-            System.err.println("Could not get screen of type " + desiredScreen.toString() + " due to exception:\n " + ex.getMessage());
+            System.err.println("Could not get screen of type " + desiredScreenType.toString() + " due to exception:\n " + ex.getMessage());
             ex.printStackTrace();
             return null;
         }
+        if (currentScreen != null ) { currentScreen.detach(this); }
+        currentScreen = desiredScreen;
+        currentScreen.attach(this);
+        return currentScreen;
+    }
+    
+    private void stopDisplayScreen() {
+        applicationFrame.remove(currentScreen.getPanel());
+    }
+    
+    private Screen displayScreen() {
+        if (currentScreen == null) { this.setScreen(ScreenType.NULL); }
+        applicationFrame.setContentPane(currentScreen.getPanel());
+        applicationFrame.invalidate();
+        applicationFrame.revalidate();
+        applicationFrame.repaint();
+        return currentScreen;
     }
 }

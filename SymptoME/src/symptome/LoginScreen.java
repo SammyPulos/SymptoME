@@ -17,8 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class LoginScreen implements Screen{
-    private JPanel screenPanel;
+public class LoginScreen extends Screen{
     private final LoginQueryDB loginQueryDB;
     
     JTextField usernameField;
@@ -28,11 +27,6 @@ public class LoginScreen implements Screen{
     public LoginScreen() throws SQLException {
         screenPanel = setupScreenPanel();
         loginQueryDB = new LoginQueryDB();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() {
@@ -103,23 +97,20 @@ public class LoginScreen implements Screen{
         return screenPanel;
     }
     
-    private Screen handleLoginButtonPressed() throws SQLException {
+    private void handleLoginButtonPressed() throws SQLException {
         // TODO: get hash of password and dont use getText
-        // validate user
         if (usernameField.getText().equals("") || passwordField.getText().equals("")) {
             notificationLabel.setText("Missing username or password.");
-            return (this);
         } else if (loginQueryDB.validateUser(usernameField.getText(), passwordField.getText())) {
             SessionData.instance().setUsername(usernameField.getText());
-            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+            this.toHomeScreen(); 
         } else {
             notificationLabel.setText("Incorrect username or password.");
             System.out.println("Incorrect username or password.");
-            return (this);
         }
     }
     
-    private Screen handleRegisterButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.REGISTRATION));
+    private void handleRegisterButtonPressed() {
+        this.toRegistrationScreen();
     }
 }

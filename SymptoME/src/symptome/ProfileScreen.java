@@ -8,24 +8,17 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class ProfileScreen implements Screen {
-    private JPanel screenPanel;
+public class ProfileScreen extends Screen {
     private ProfileQueryDB profileQueryDB;
     
     public ProfileScreen() throws SQLException {
         profileQueryDB = new ProfileQueryDB();
         screenPanel = setupScreenPanel();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() {
@@ -125,23 +118,19 @@ public class ProfileScreen implements Screen {
         return screenPanel;
     }
     
-    private Screen handleHomeButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+    private void handleHomeButtonPressed() {
+        this.toHomeScreen();
     }
-    
-    private Screen handleSurveyButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.SURVEY));
+    private void handleSurveyButtonPressed() {
+        this.toSurveyScreen();
     }
-    
-    private Screen handleInsightsButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.INSIGHTS));
-    }   
-    
-    private Screen handleHistoryButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HISTORY));
-    }   
-    
-    private Screen handleLogoutButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+    private void handleInsightsButtonPressed() {
+        this.toInsightsScreen();
+    }
+    private void handleHistoryButtonPressed() {
+        this.toHistoryScreen();
+    }
+    private void handleLogoutButtonPressed() {
+        this.toLoginScreen();
     }    
 }

@@ -9,7 +9,8 @@ enum ScreenType {
     PROFILE,
     SURVEY,
     INSIGHTS,
-    HISTORY
+    HISTORY,
+    NULL
 }
 
 public class ScreenFactory {
@@ -36,7 +37,7 @@ public class ScreenFactory {
             case HISTORY:
                 return new HistoryScreen();
             default:
-                throw new IllegalArgumentException("passed screenType not in enum");
+                return new NullScreen();
         }
     }
 }

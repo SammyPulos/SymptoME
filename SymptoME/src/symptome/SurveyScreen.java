@@ -3,7 +3,6 @@ package symptome;
 import com.toedter.calendar.JDateChooser;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,8 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
-public class SurveyScreen implements Screen {
-    private JPanel screenPanel;
+public class SurveyScreen extends Screen {
     private final SurveyScreenQueryDB surveyScreenQueryDB;
     
     private java.sql.Date todaysDate;
@@ -51,11 +48,6 @@ public class SurveyScreen implements Screen {
         todaysDate = new java.sql.Date((new Date()).getTime());
         surveyScreenQueryDB = new SurveyScreenQueryDB();
         screenPanel = setupScreenPanel();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() {
@@ -288,62 +280,11 @@ public class SurveyScreen implements Screen {
         return screenPanel;
     }
     
-     public boolean checkCompletedSurvey(){
-        // checking "Did you go outside today where there were other people?" Y/N
-        if (!outsideRBY.isSelected() && !outsideRBN.isSelected()){
-            return false;
-        }
-        // checking "Were you tested for COVID-19 today?" Y/N
-        else if (!testedRBY.isSelected() && !testedRBN.isSelected()){
-            return false;
-        }
-        // checking "If you received your test results today, what were they?" P/N/NA
-        else if (!resultRBY.isSelected() && !resultRBN.isSelected() && !resultRBNA.isSelected()){
-            return false;
-        }
-        return true;
-    }
-    
-    private Screen handleSubmitButtonPressed() {     
-        
-        // make sure fields are actually filled
-        if (!checkCompletedSurvey()){
-            notificationLabel.setText("Please complete all fields before submitting.");
-            return this;
-        }
-        // push results to database
-        else{
-            Report report = new Report.ReportBuilder().withUsername(SessionData.instance().getUsername()).withDate(todaysDate).withFeeling(feelingSlider).withCough(coughBox).withDiffBreathing(diffBreathingBox).withFever(feverBox).withPain(painBox).withSoreThroat(soreThroatBox).withLoss(lossBox).withOutsideRBY(outsideRBY).withOutsideRBN(outsideRBN).withTestedRBY(testedRBY).withTestedRBN(testedRBN).withResultRBY(resultRBY).withResultRBN(resultRBN).withResultRBNA(resultRBNA).build();
-            surveyScreenQueryDB.addReport(report);
-            return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
-        }
-    }
-    
-    private Screen handleHomeButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
-    }
-    
-    private Screen handleProfileButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.PROFILE));
-    }
-    
-    private Screen handleInsightsButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.INSIGHTS));
-    }   
-    
-    private Screen handleHistoryButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HISTORY));
-    }   
-    
-    private Screen handleLogoutButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
-    }    
-    
     private void updateSurveyFields() {
         JDateChooser dateChooser = new JDateChooser(new Date());
         java.sql.Date targetDate = new java.sql.Date(dateChooser.getDate().getTime());
         ArrayList<String[]> results = surveyScreenQueryDB.retrieveReport(SessionData.instance().getUsername(), targetDate);
-        if ((results == null) || (results.isEmpty())){  // if no survey taken on that day
+        if ((results == null) || (results.isEmpty())) {  // if no survey taken on that day
         }
         else{
             notificationLabel.setText(""); //should be empty string to show nothing
@@ -370,4 +311,50 @@ public class SurveyScreen implements Screen {
                 resultRBN.setSelected(true);
         }
     }
+    
+    private boolean checkCompletedSurvey(){
+        // checking "Did you go outside today where there were other people?" Y/N
+        if (!outsideRBY.isSelected() && !outsideRBN.isSelected()){
+            return false;
+        }
+        // checking "Were you tested for COVID-19 today?" Y/N
+        else if (!testedRBY.isSelected() && !testedRBN.isSelected()){
+            return false;
+        }
+        // checking "If you received your test results today, what were they?" P/N/NA
+        else if (!resultRBY.isSelected() && !resultRBN.isSelected() && !resultRBNA.isSelected()){
+            return false;
+        }
+        return true;
+    }    
+    
+    private void handleSubmitButtonPressed() {     
+        
+        // make sure fields are actually filled
+        if (!checkCompletedSurvey()){
+            notificationLabel.setText("Please complete all fields before submitting.");
+        }
+        // push results to database
+        else{
+            Report report = new Report.ReportBuilder().withUsername(SessionData.instance().getUsername()).withDate(todaysDate).withFeeling(feelingSlider).withCough(coughBox).withDiffBreathing(diffBreathingBox).withFever(feverBox).withPain(painBox).withSoreThroat(soreThroatBox).withLoss(lossBox).withOutsideRBY(outsideRBY).withOutsideRBN(outsideRBN).withTestedRBY(testedRBY).withTestedRBN(testedRBN).withResultRBY(resultRBY).withResultRBN(resultRBN).withResultRBNA(resultRBNA).build();
+            surveyScreenQueryDB.addReport(report);
+            this.toHomeScreen();
+        }
+    }
+    
+    private void handleHomeButtonPressed() {
+        this.toHomeScreen();
+    }
+    private void handleProfileButtonPressed() {
+        this.toProfileScreen();
+    }
+    private void handleInsightsButtonPressed() {
+        this.toInsightsScreen();
+    }   
+    private void handleHistoryButtonPressed() {
+        this.toHistoryScreen();
+    }   
+    private void handleLogoutButtonPressed() {
+        this.toLoginScreen();
+    }    
 }

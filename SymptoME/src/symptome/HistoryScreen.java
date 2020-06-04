@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,8 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 
-public class HistoryScreen implements Screen{
-    private JPanel screenPanel;
+public class HistoryScreen extends Screen{
     private HistoryScreenQueryDB historyScreenQueryDB;
     
     private JDateChooser dateChooser;
@@ -48,16 +46,10 @@ public class HistoryScreen implements Screen{
     private JRadioButton resultRBN;
     private JRadioButton resultRBNA;
     private ButtonGroup resultBG;
-    private Object Interger;
     
     public HistoryScreen() throws SQLException {
         historyScreenQueryDB = new HistoryScreenQueryDB();
         screenPanel = setupScreenPanel();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() {
@@ -395,24 +387,20 @@ public class HistoryScreen implements Screen{
         resultBG.clearSelection();
     }
     
-    private Screen handleHomeButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.HOME));
+    private void handleHomeButtonPressed() {
+        this.toHomeScreen();
     }
-    
-    private Screen handleProfileButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.PROFILE));
+    private void handleProfileButtonPressed() {
+        this.toProfileScreen();
     }
-    
-    private Screen handleSurveyButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.SURVEY));
-    }   
-    
-    private Screen handleInsightsButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.INSIGHTS));
+    private void handleSurveyButtonPressed() {
+        this.toSurveyScreen();
     }
-    
-    private Screen handleLogoutButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+    private void handleInsightsButtonPressed() {
+        this.toInsightsScreen();
+    }
+    private void handleLogoutButtonPressed() {
+        this.toLoginScreen();
     }    
     
 }

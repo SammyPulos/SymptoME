@@ -7,37 +7,36 @@ import java.util.Map;
 public class InsightsFacade {
     
     // insights concrete queryDB classes
-    InsightsSameSympsQueryDB insightsSameSympsQueryDB;
-    InsightsSameZipQueryDB insightsSameZipQueryDB;
+    InsightsSymptomsQueryDB insightsSymptomsQueryDB;
+    InsightsLocationQueryDB insightsLocationQueryDB;
     InsightsChartQueryDB insightsChartQueryDB;
     
     public InsightsFacade() throws SQLException {
-        // TODO
-        this.insightsSameSympsQueryDB = new InsightsSameSympsQueryDB();
-        this.insightsSameZipQueryDB = new InsightsSameZipQueryDB();
+        this.insightsSymptomsQueryDB = new InsightsSameSympsQueryDB();
+        this.insightsLocationQueryDB = new InsightsSameZipQueryDB();
         this.insightsChartQueryDB = new InsightsChartQueryDB();
     }
     
-    public double getPercentSameSymptoms() throws SQLException {
-        return(insightsSameSympsQueryDB.calcPercentSameSymptoms());
+    public double getPercentSimilarSymptoms() throws SQLException {
+        return(insightsSymptomsQueryDB.calcPercentSimilarSymptoms());
     }
-    public double getPercentSameSymptomsTested() throws SQLException {
-        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTested());
+    public double getPercentSimilarSymptomsTested() throws SQLException {
+        return(insightsSymptomsQueryDB.calcPercentSimilarSmyptomsTested());
     }
-    public double getPercentSameSymptomsPositive() throws SQLException {
-        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTestedPositive());
+    public double getPercentSimilarSymptomsPositive() throws SQLException {
+        return(insightsSymptomsQueryDB.calcPercentSimilarSmyptomsTestedPositive());
     }
-    public double getPercentSameSymptomsNegative() throws SQLException {
-        return(insightsSameSympsQueryDB.calcPercentSameSmyptomsTestedNegative());
+    public double getPercentSimilarSymptomsNegative() throws SQLException {
+        return(insightsSymptomsQueryDB.calcPercentSimilarSmyptomsTestedNegative());
     }
-    public double getPercentSameLocationTested() throws SQLException {
-        return(insightsSameZipQueryDB.calcPercentSameLocationTested());
+    public double getPercentSimilarLocationTested() throws SQLException {
+        return(insightsLocationQueryDB.calcPercentSimilarLocationTested());
     }
-    public double getPercentSameLocationPositive() throws SQLException {
-        return(insightsSameZipQueryDB.calcPercentSameLocationPositive());
+    public double getPercentSimilarLocationPositive() throws SQLException {
+        return(insightsLocationQueryDB.calcPercentSimilarLocationPositive());
     }
-    public double getPercentSameLocationNegative() throws SQLException {
-        return(insightsSameZipQueryDB.calcPercentSameLocationNegative());
+    public double getPercentSimilarLocationNegative() throws SQLException {
+        return(insightsLocationQueryDB.calcPercentSimilarLocationNegative());
     }
     public ArrayList<String[]> getChartPoints() {
         return(insightsChartQueryDB.retrieveFeelingRatings());

@@ -14,7 +14,7 @@ public class LoginQueryDB extends QueryDB{
         return ("SELECT passhash FROM Users WHERE username='" + username + "'");  
     }
     
-    public boolean validateUser(String username, String password) throws SQLException{
+    public boolean validateUser(String username, String password) {
         ArrayList<String[]> results = executeReadQuery(confirmPasswordFor(username));
         if (results == null || results.isEmpty()){
             return false;

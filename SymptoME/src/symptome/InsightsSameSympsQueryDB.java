@@ -6,14 +6,15 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class InsightsSameSympsQueryDB extends QueryDB {
+public class InsightsSameSympsQueryDB extends QueryDB implements InsightsSymptomsQueryDB {
     
     public InsightsSameSympsQueryDB() throws SQLException{
         super();
     }
     
     // calculates percentage of users with same symptoms
-    public double calcPercentSameSymptoms() throws SQLException{
+    @Override
+    public double calcPercentSimilarSymptoms() throws SQLException{
         Set<String> sameSympUsers = retrieveUsersWithSameSymptoms();
         if (sameSympUsers == null)
             return -1;
@@ -26,8 +27,9 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         }
     }
     
-     // calculates percentage of users with same symptoms who've been tested
-    public double calcPercentSameSmyptomsTested() throws SQLException{
+    // calculates percentage of users with same symptoms who've been tested
+    @Override
+    public double calcPercentSimilarSmyptomsTested() throws SQLException{
         Set<String> sameSympUsers = retrieveUsersWithSameSymptoms();
         ArrayList<String[]> sameSympUsersWhoTested = retrieveUserWithSameSymptomsWhoTested();
         
@@ -37,8 +39,9 @@ public class InsightsSameSympsQueryDB extends QueryDB {
             return (100 * sameSympUsersWhoTested.size() / sameSympUsers.size());
     }
     
-      // calculates percentage of users with same symptoms who've tested negative
-    public double calcPercentSameSmyptomsTestedNegative() throws SQLException{
+    // calculates percentage of users with same symptoms who've tested negative
+    @Override
+    public double calcPercentSimilarSmyptomsTestedNegative() throws SQLException{
         ArrayList<String[]> negTestedUsers = retrieveUsersWithSameSymptomsWithTestResults(0);
         ArrayList<String[]> posTestedUsers = retrieveUsersWithSameSymptomsWithTestResults(1);
         ArrayList<String[]> sameSympUsersWhoTested = retrieveUserWithSameSymptomsWhoTested();
@@ -58,8 +61,9 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         return (100 * negUserCount / sameSympUsersWhoTested.size());
     }
     
-      // calculates percentage of users with same symptoms who've tested positive
-    public double calcPercentSameSmyptomsTestedPositive() throws SQLException{
+    // calculates percentage of users with same symptoms who've tested positive
+    @Override
+    public double calcPercentSimilarSmyptomsTestedPositive() throws SQLException{
         ArrayList<String[]> posTestedUsers = retrieveUsersWithSameSymptomsWithTestResults(1);
         ArrayList<String[]> sameSympUsersWhoTested = retrieveUserWithSameSymptomsWhoTested();
         
@@ -69,12 +73,12 @@ public class InsightsSameSympsQueryDB extends QueryDB {
             return (100 * posTestedUsers.size() / sameSympUsersWhoTested.size());
     }
     
-    public int numUsers() throws SQLException{
+    private int numUsers() throws SQLException{
         ArrayList<String[]> results = executeReadQuery("SELECT * FROM Users");
         return results.size(); // return all but current user
     } 
     
-    public Set<String> retrieveUsersWithSameSymptoms() {
+    private Set<String> retrieveUsersWithSameSymptoms() {
         String username = SessionData.instance().getUsername();
         Date todaysDate = new java.sql.Date((new Date()).getTime());
         
@@ -102,7 +106,7 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         return sameSympUsers;
     } 
     
-    public ArrayList<String[]> retrieveUserWithSameSymptomsWhoTested() {
+    private ArrayList<String[]> retrieveUserWithSameSymptomsWhoTested() {
         Set<String> sameSympUsers = retrieveUsersWithSameSymptoms();
         if (sameSympUsers ==  null || sameSympUsers.isEmpty()){
             return null;
@@ -119,7 +123,7 @@ public class InsightsSameSympsQueryDB extends QueryDB {
         return testedUsers;
     }
     
-    public ArrayList<String[]> retrieveUsersWithSameSymptomsWithTestResults(int result){
+    private ArrayList<String[]> retrieveUsersWithSameSymptomsWithTestResults(int result){
         ArrayList<String[]> testedUsers = retrieveUserWithSameSymptomsWhoTested();
         if (testedUsers ==  null || testedUsers.isEmpty()){
             return null;

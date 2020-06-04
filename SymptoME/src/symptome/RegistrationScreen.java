@@ -19,8 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class RegistrationScreen implements Screen {
-    private JPanel screenPanel;
+public class RegistrationScreen extends Screen {
     private RegisterQueryDB registerQueryDB;
     
     private JTextField usernameField;
@@ -32,11 +31,6 @@ public class RegistrationScreen implements Screen {
     public RegistrationScreen() throws SQLException {
         screenPanel = setupScreenPanel();
         registerQueryDB = new RegisterQueryDB();
-    }
-    
-    @Override
-    public JPanel getPanel() {
-        return screenPanel;
     }
     
     private JPanel setupScreenPanel() {
@@ -119,29 +113,24 @@ public class RegistrationScreen implements Screen {
         return screenPanel;
     }
     
-    private Screen handleBackButtonPressed() {
-        return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
-    }
-    
-    private Screen handleConfirmButtonPressed() throws SQLException {
+    private void handleConfirmButtonPressed() throws SQLException {
         if (usernameField.getText().equals("") || passwordField.getText().equals("") || zipField.getText().equals("") || dobChooser.getDate() == null) {
             notificationLabel.setText("Please fill out all fields.");
-            return this;
         } else if ( !zipField.getText().matches("\\b\\d{5}\\b") ) {
             notificationLabel.setText("Please enter a valid zip code.");
             zipField.setText("");
-            return this;
         } else {
             java.sql.Date dob = new java.sql.Date(dobChooser.getDate().getTime());
             if (registerQueryDB.registerUser(usernameField.getText(), passwordField.getText(), zipField.getText(), dob)){
-                return (ApplicationWindow.Instance().setScreen(ScreenType.LOGIN));
+                this.toLoginScreen();
             }
             else{
                 notificationLabel.setText("Username already exists.");
                 System.out.println("Username already exists."); 
-                return (this);
             }
         }
     }
-        
+    private void handleBackButtonPressed() {
+        this.toLoginScreen();
+    }   
 }
