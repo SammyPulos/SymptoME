@@ -174,7 +174,7 @@ public class SurveyScreen extends Screen {
         resultRBNA = new JRadioButton("No results");
         resultRBNA.setBackground(Color.white);
         resultRBNA.setFont(new Font("SegoeUI", Font.PLAIN, 16));
-        resultRBNA.setBounds(880, 525, 100, 20);
+        resultRBNA.setBounds(880, 525, 200, 20);
         screenPanel.add(resultRBNA);
         
         ButtonGroup resultBG = new ButtonGroup();

@@ -211,7 +211,7 @@ public class HistoryScreen extends Screen{
         resultRBNA = new JRadioButton("No results");
         resultRBNA.setBackground(Color.white);
         resultRBNA.setFont(new Font("SegoeUI", Font.PLAIN, 16));
-        resultRBNA.setBounds(880, 630, 100, 20);
+        resultRBNA.setBounds(880, 630, 200, 20);
         resultRBNA.setEnabled(false);
         screenPanel.add(resultRBNA);
         
