@@ -46,7 +46,6 @@ public final class ConnectDB {
     } 
     
     protected ArrayList<String[]> runReadQuery(String sqlQuery){
-        System.out.println(sqlQuery);
         ArrayList<String[]> results = new ArrayList<>();
         int numFields;
         try{
@@ -74,6 +73,7 @@ public final class ConnectDB {
     } 
     
     protected void runUpdateQuery(String sqlQuery){
+        System.out.println(sqlQuery);
         try (Statement statement = connection.createStatement()) {
             statement.executeQuery(sqlQuery); 
         } catch(SQLException e){
