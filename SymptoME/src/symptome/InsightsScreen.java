@@ -63,7 +63,7 @@ public class InsightsScreen extends Screen{
         
         percentSameSymptomsTested = new JLabel("");
         percentSameSymptomsTested.setFont(new Font("SegoeUI", Font.PLAIN, 20));
-        percentSameSymptomsTested.setBounds(250, 225, 1000, 25);
+        percentSameSymptomsTested.setBounds(250, 225, 1100, 25);
         screenPanel.add(percentSameSymptomsTested);
         
         percentSameSymptomsResults = new JLabel("");
@@ -73,7 +73,7 @@ public class InsightsScreen extends Screen{
         
         percentSameLocationTested = new JLabel("");
         percentSameLocationTested.setFont(new Font("SegoeUI", Font.PLAIN, 20));
-        percentSameLocationTested.setBounds(250, 295, 1000, 25);     
+        percentSameLocationTested.setBounds(250, 295, 1100, 25);     
         screenPanel.add(percentSameLocationTested);
         
         percentSameLocationResults = new JLabel("");
